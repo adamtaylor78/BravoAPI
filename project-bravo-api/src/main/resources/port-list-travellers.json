@@ -1,0 +1,590 @@
+[
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"portWorkLocationCode": "1608",
+		"portWorkLocationName": "Program Services - Pacific"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"portWorkLocationCode": "1609",
+		"portWorkLocationName": "Investigations Div. - Pacific",
+		"subPortWorkLocationCode": "1610",
+		"subPortWorkLocationName": "Vancouver"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"portWorkLocationCode": "1612",
+		"portWorkLocationName": "Intelligence & Contraband - Pacific",
+		"subPortWorkLocationCode": "1613",
+		"subPortWorkLocationName": "Vancouver I&C"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"portWorkLocationCode": "1612",
+		"portWorkLocationName": "Intelligence & Contraband - Pacific",
+		"subPortWorkLocationCode": "8071",
+		"subPortWorkLocationName": "Penticton I&C"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"portWorkLocationCode": "1612",
+		"portWorkLocationName": "Intelligence & Contraband - Pacific",
+		"subPortWorkLocationCode": "8213",
+		"subPortWorkLocationName": "Richmond I&C"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"portWorkLocationCode": "1612",
+		"portWorkLocationName": "Intelligence & Contraband - Pacific",
+		"subPortWorkLocationCode": "8214",
+		"subPortWorkLocationName": "Surrey I&C"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"portWorkLocationCode": "1620",
+		"portWorkLocationName": "Compliance & Verification - Pacific"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"portWorkLocationCode": "1622",
+		"portWorkLocationName": "Client Services - Pacific"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"portWorkLocationCode": "1623",
+		"portWorkLocationName": "Appeals - Pacific"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1626",
+		"districtWorkLocationName": "Pacific Region Enforcement Centre",
+		"portWorkLocationCode": "1656",
+		"portWorkLocationName": "Metro Vancouver Investigations"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8040",
+		"portWorkLocationName": "Nanaimo"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8080",
+		"portWorkLocationName": "Prince Rupert"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8081",
+		"portWorkLocationName": "Stewart"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8111",
+		"portWorkLocationName": "Victoria Airport"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8113",
+		"portWorkLocationName": "Victoria - Longroom and Marine",
+		"subPortWorkLocationCode": "8115",
+		"subPortWorkLocationName": "Belleville Ferry Terminal"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8113",
+		"portWorkLocationName": "Victoria - Longroom and Marine",
+		"subPortWorkLocationCode": "8116",
+		"subPortWorkLocationName": "Blackball (Coho) Ferry Terminal-Passenger"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8113",
+		"portWorkLocationName": "Victoria - Longroom and Marine",
+		"subPortWorkLocationCode": "8117",
+		"subPortWorkLocationName": "Blackball (Coho) Ferry Terminal-Vehicle"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8113",
+		"portWorkLocationName": "Victoria - Longroom and Marine",
+		"subPortWorkLocationCode": "8118",
+		"subPortWorkLocationName": "Washington State Ferries Terminal"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8250",
+		"portWorkLocationName": "Port Alberni"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8260",
+		"portWorkLocationName": "Powell River"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8270",
+		"portWorkLocationName": "Kitimat"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8290",
+		"portWorkLocationName": "Courtenay"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8300",
+		"portWorkLocationName": "Comox Valley Airport"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8380",
+		"portWorkLocationName": "Sidney"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8901",
+		"portWorkLocationName": "Whitehorse International Airport"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8902",
+		"portWorkLocationName": "Beaver Creek"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8904",
+		"portWorkLocationName": "Fraser - B.C."
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8905",
+		"portWorkLocationName": "Little Gold Creek"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8906",
+		"portWorkLocationName": "Pleasant Camp"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1630",
+		"districtWorkLocationName": "West Coast & Yukon District",
+		"portWorkLocationCode": "8909",
+		"portWorkLocationName": "Dawson City"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1631",
+		"districtWorkLocationName": "Metro Vancouver District",
+		"portWorkLocationCode": "8092",
+		"portWorkLocationName": "Vancouver Mail Centre"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1631",
+		"districtWorkLocationName": "Metro Vancouver District",
+		"portWorkLocationCode": "8093",
+		"portWorkLocationName": "Vancouver North Dockside",
+		"subPortWorkLocationCode": "8090",
+		"subPortWorkLocationName": "Vancouver Amtrak"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1631",
+		"districtWorkLocationName": "Metro Vancouver District",
+		"portWorkLocationCode": "8093",
+		"portWorkLocationName": "Vancouver North Dockside",
+		"subPortWorkLocationCode": "8096",
+		"subPortWorkLocationName": "Canada Place Cruise Ship Terminal"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1631",
+		"districtWorkLocationName": "Metro Vancouver District",
+		"portWorkLocationCode": "8094",
+		"portWorkLocationName": "Burnaby CEF"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1631",
+		"districtWorkLocationName": "Metro Vancouver District",
+		"portWorkLocationCode": "8095",
+		"portWorkLocationName": "Vancouver South Dockside"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1631",
+		"districtWorkLocationName": "Metro Vancouver District",
+		"portWorkLocationCode": "8101",
+		"portWorkLocationName": "Vancouver Commercial Operations - West"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1631",
+		"districtWorkLocationName": "Metro Vancouver District",
+		"portWorkLocationCode": "8102",
+		"portWorkLocationName": "Vancouver Commercial Operations - East"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1632",
+		"districtWorkLocationName": "Pacific Highway District",
+		"portWorkLocationCode": "1667",
+		"portWorkLocationName": "Surrey Customs Processing Centre"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1632",
+		"districtWorkLocationName": "Pacific Highway District",
+		"portWorkLocationCode": "8131",
+		"portWorkLocationName": "Pacific Highway - Commercial"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1632",
+		"districtWorkLocationName": "Pacific Highway District",
+		"portWorkLocationCode": "8132",
+		"portWorkLocationName": "Pacific Highway - Traffic"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1632",
+		"districtWorkLocationName": "Pacific Highway District",
+		"portWorkLocationCode": "8135",
+		"portWorkLocationName": "Douglas Passenger",
+		"subPortWorkLocationCode": "8135",
+		"subPortWorkLocationName": "Douglas Passenger"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1632",
+		"districtWorkLocationName": "Pacific Highway District",
+		"portWorkLocationCode": "8150",
+		"portWorkLocationName": "Boundary Bay"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1632",
+		"districtWorkLocationName": "Pacific Highway District",
+		"portWorkLocationCode": "8171",
+		"portWorkLocationName": "Huntingdon - Commercial"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1632",
+		"districtWorkLocationName": "Pacific Highway District",
+		"portWorkLocationCode": "8172",
+		"portWorkLocationName": "Abbotsford International Airport"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1632",
+		"districtWorkLocationName": "Pacific Highway District",
+		"portWorkLocationCode": "8173",
+		"portWorkLocationName": "Huntingdon - Traffic"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1632",
+		"districtWorkLocationName": "Pacific Highway District",
+		"portWorkLocationCode": "8174",
+		"portWorkLocationName": "Aldergrove Traffic"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1632",
+		"districtWorkLocationName": "Pacific Highway District",
+		"portWorkLocationCode": "8175",
+		"portWorkLocationName": "Aldergrove Commercial"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1632",
+		"districtWorkLocationName": "Pacific Highway District",
+		"portWorkLocationCode": "8222",
+		"portWorkLocationName": "P.C.B. Properties Ltd DBA. Highway Sufferance Warehouse"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1633",
+		"districtWorkLocationName": "Vancouver International Airport District",
+		"portWorkLocationCode": "8210",
+		"portWorkLocationName": "VIA - Manager & Staff (ASEO)"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1633",
+		"districtWorkLocationName": "Vancouver International Airport District",
+		"portWorkLocationCode": "8211",
+		"portWorkLocationName": "VIA Commercial Ops"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1633",
+		"districtWorkLocationName": "Vancouver International Airport District",
+		"portWorkLocationCode": "8212",
+		"portWorkLocationName": "VIA - Traffic"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8011",
+		"portWorkLocationName": "Cranbrook"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8020",
+		"portWorkLocationName": "Roosville"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8070",
+		"portWorkLocationName": "Penticton"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8140",
+		"portWorkLocationName": "Kamloops"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8161",
+		"portWorkLocationName": "Carson"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8162",
+		"portWorkLocationName": "Cascade"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8181",
+		"portWorkLocationName": "Kingsgate - Commercial"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8182",
+		"portWorkLocationName": "Kingsgate - Traffic"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8191",
+		"portWorkLocationName": "Osoyoos"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8201",
+		"portWorkLocationName": "Prince George"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8230",
+		"portWorkLocationName": "Vernon"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8310",
+		"portWorkLocationName": "Kelowna"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8320",
+		"portWorkLocationName": "Chopaka"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8330",
+		"portWorkLocationName": "Midway"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8340",
+		"portWorkLocationName": "Nelway"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8360",
+		"portWorkLocationName": "Paterson"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8370",
+		"portWorkLocationName": "Rykerts"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8400",
+		"portWorkLocationName": "Waneta"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8410",
+		"portWorkLocationName": "Flathead"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8420",
+		"portWorkLocationName": "Dawson Creek"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"districtWorkLocationCode": "1638",
+		"districtWorkLocationName": "Okanagan and Kootenay District",
+		"portWorkLocationCode": "8520",
+		"portWorkLocationName": "Osoyoos - Commercial"
+	},
+	{
+		"regionalWorkLocationCode": "1600",
+		"regionalWorkLocationName": "Pacific Region",
+		"portWorkLocationCode": "6433",
+		"portWorkLocationName": "Customs Collections - Pacific"
+	}
+]

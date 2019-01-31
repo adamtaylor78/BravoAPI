@@ -14,6 +14,10 @@ public class PortOfEntry {
 	private String province;
 	private String postalCode;
 	
+	public PortOfEntry() {
+		
+	}
+	
 	public PortOfEntry(String portWorkLocationCode, String portWorkLocationName, String regionalWorkLocationCode,
 			String regionalWorkLocationName, String districtWorkLocationCode, String districtWorkLocationName,
 			String addressLineOne, String addressLineTwo, String municipalityName, String province, String postalCode) {
