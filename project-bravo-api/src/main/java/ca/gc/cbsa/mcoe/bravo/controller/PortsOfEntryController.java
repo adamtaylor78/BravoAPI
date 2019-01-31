@@ -21,14 +21,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 
-import ca.gc.cbsa.mcoe.bravo.domain.HourlyStats;
+import ca.gc.cbsa.mcoe.bravo.domain.BorderStats;
 import ca.gc.cbsa.mcoe.bravo.domain.PortOfEntry;
-import ca.gc.cbsa.mcoe.bravo.domain.PortOfEntryStats;
-import ca.gc.cbsa.mcoe.bravo.domain.PortStats;
-import ca.gc.cbsa.mcoe.bravo.domain.PortStatsCounts;
 import ca.gc.cbsa.mcoe.bravo.domain.ProjectBravoApiConstants;
-import ca.gc.cbsa.mcoe.bravo.domain.Province;
 import ca.gc.cbsa.mcoe.bravo.repository.HourlyStatsRepository;
+import ca.gc.cbsa.mcoe.bravo.util.StatsUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
@@ -51,32 +48,38 @@ public class PortsOfEntryController {
 	
 	@RequestMapping(value = "/ports-of-entry/{workLocationCode}", method = RequestMethod.GET)
 	@ApiOperation("Returns a specific POE by work location. Returns 404 if not found.")
-	public PortOfEntry getPortOfEntryByWorkLocation(@ApiParam("Division ID.  1 = Travellers, 2 = Commercial") @PathVariable(value = "divisionCode") Integer divisionCode,
-			@ApiParam("Work location code.  Example: 0453") @PathVariable(value = "workLocationCode") String workLocationCode) {
-		PortOfEntry portOfEntry = new PortOfEntry("0453", "AMBASSADOR BRIDGE", "1100", "SOUTHERN ONTARIO", "1201",
-				"ON DISTRICT", "45 AMBASSADOR LANE", "TEST", "WINDSOR", "ON", "K1K1K1");
-		return portOfEntry;
+	public PortOfEntry getPortOfEntryByWorkLocation(@ApiParam("Work location code.  Example: 0453") @PathVariable(value = "workLocationCode") String workLocationCode) throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+
+		File portListFile = new ClassPathResource("port-list-commercial.json").getFile();
+		List<PortOfEntry> poeList = mapper.readValue(portListFile, new TypeReference<List<PortOfEntry>>(){});
+		
+		for (PortOfEntry poe : poeList) {
+			if (poe.getPortWorkLocationCode().equals(workLocationCode)) {
+				return poe;
+			}
+		}
+		return null;
 	}
 
 	@RequestMapping(value = "/ports-of-entry/{workLocationCode}/stats", method = RequestMethod.GET)
 	@ApiOperation("Returns stats for a specific POE by work location by a specific date range. Returns 404 if not found.")
-	public List<PortOfEntryStats> getPortOfEntryStatsByWorkLocation(@ApiParam("Division ID.  1 = Travellers, 2 = Commercial") @PathVariable(value = "divisionCode") Integer divisionCode,
-			@ApiParam("Work location code.  Example: 0453") @PathVariable(value = "workLocationCode") String workLocationCode,
+	public List<BorderStats> getPortOfEntryStatsByWorkLocation(@ApiParam("Work location code.  Example: 0453") @PathVariable(value = "workLocationCode") String workLocationCode,
 			@ApiParam("Mode.  1 = Commercial Hwy, 2 = Commercial Rail, 3 = Commercial Marine, 4 = Commercial Air, 5 = Commercial Multi, 6 = Travellers Hwy, 7 = Travellers Rail, 8 = Travellers Marine, 9 = Travellers Air, 10 = Travellers Multi") @RequestParam("mode") Integer mode,
 			@ApiParam("Time delimiter.  Valid values: hour, day, month, year.") @RequestParam("timeDelimiter") String timeDelimiter,
-			@ApiParam("Start Date in Eastern Standard Time.  Format: yyyy-MM-dd HH:MM") @RequestParam("startDate") String startDate,
-			@ApiParam("End Date in Eastern Standard Time.  Format: yyyy-MM-dd HH:MM") @RequestParam("endDate") String endDate) throws ParseException {
-		List<PortOfEntryStats> portOfEntryStatsList = new ArrayList<>();
-		
+			@ApiParam("Start Date in Eastern Standard Time.  Format: yyyy-MM-dd HH:mm") @RequestParam("startDate") String startDate,
+			@ApiParam("End Date in Eastern Standard Time.  Format: yyyy-MM-dd HH:mm") @RequestParam("endDate") String endDate) throws ParseException {
 		if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_HOURLY)) {
-			List<HourlyStats> hourlyStatsList = hourlyStatsRepository.findHourlyStatsBetween(startDate, endDate);
+			return StatsUtil.buildMockStats(Calendar.HOUR, mode, startDate, endDate);
+			
+			/*List<HourlyStats> hourlyStatsList = hourlyStatsRepository.findHourlyStatsBetween(startDate, endDate);
 			
 			for (HourlyStats hourlyStats : hourlyStatsList) {
 				for (PortStats portStats : hourlyStats.getPorts()) {
 					if (portStats.getPort().equals(workLocationCode)) {
 						for (PortStatsCounts counts : portStats.getCounts()) {
 							if (counts.getMode().equals(mode.toString())) {
-								PortOfEntryStats portOfEntryStats = new PortOfEntryStats();
+								BorderStats portOfEntryStats = new BorderStats();
 								portOfEntryStats.setTotal(counts.getCount());
 								portOfEntryStats.setTimestamp(hourlyStats.getId());
 								portOfEntryStatsList.add(portOfEntryStats);
@@ -84,89 +87,16 @@ public class PortsOfEntryController {
 						}
 					}
 				}
-			}
+			}*/
 		} else if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_DAILY)) {
-			Faker faker = new Faker();
-			
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:MM");
-			Date startDateObj = format.parse(startDate);
-			Date endDateObj = format.parse(endDate); 
-			
-			Calendar startCal = Calendar.getInstance();
-			startCal.setTime(startDateObj);
-			Calendar endCal = Calendar.getInstance();
-			endCal.setTime(endDateObj);
-			
-			while (startCal.before(endCal)) {
-				PortOfEntryStats portOfEntryStats = new PortOfEntryStats();
-				portOfEntryStats.setTotal(Long.valueOf(faker.number().numberBetween(60, 250)));
-				portOfEntryStats.setTimestamp(format.format(startCal));
-				portOfEntryStatsList.add(portOfEntryStats);
-				startCal.add(Calendar.DAY_OF_MONTH, 1);
-			}
+			return StatsUtil.buildMockStats(Calendar.DAY_OF_MONTH, mode, startDate, endDate);
 		} else if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_MONTHLY)) {
-			Faker faker = new Faker();
-			
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:MM");
-			Date startDateObj = format.parse(startDate);
-			Date endDateObj = format.parse(endDate); 
-			
-			Calendar startCal = Calendar.getInstance();
-			startCal.setTime(startDateObj);
-			Calendar endCal = Calendar.getInstance();
-			endCal.setTime(endDateObj);
-			
-			while (startCal.before(endCal)) {
-				PortOfEntryStats portOfEntryStats = new PortOfEntryStats();
-				portOfEntryStats.setTotal(Long.valueOf(faker.number().numberBetween(1800, 7000)));
-				portOfEntryStats.setTimestamp(format.format(startCal));
-				portOfEntryStatsList.add(portOfEntryStats);
-				startCal.add(Calendar.MONTH, 1);
-			}
+			return StatsUtil.buildMockStats(Calendar.MONTH, mode, startDate, endDate);
 		} else if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_ANNUAL)) {
-			Faker faker = new Faker();
-			
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:MM");
-			Date startDateObj = format.parse(startDate);
-			Date endDateObj = format.parse(endDate); 
-			
-			Calendar startCal = Calendar.getInstance();
-			startCal.setTime(startDateObj);
-			Calendar endCal = Calendar.getInstance();
-			endCal.setTime(endDateObj);
-			
-			while (startCal.before(endCal)) {
-				PortOfEntryStats portOfEntryStats = new PortOfEntryStats();
-				portOfEntryStats.setTotal(Long.valueOf(faker.number().numberBetween(45000, 70000)));
-				portOfEntryStats.setTimestamp(format.format(startCal));
-				portOfEntryStatsList.add(portOfEntryStats);
-				startCal.add(Calendar.YEAR, 1);
-			}
+			return StatsUtil.buildMockStats(Calendar.YEAR, mode, startDate, endDate);
 		}
 		
-		return portOfEntryStatsList;
+		return null;
 	}
 	
-	@RequestMapping(value = "/provinces/{provinceCode}/stats", method = RequestMethod.GET)
-	@ApiOperation("Returns a list of provinces.")
-	public List<Province> getProvinces() throws IOException {
-		ObjectMapper mapper = new ObjectMapper();
-
-		File portListFile = new ClassPathResource("provinces-list.json").getFile();
-		List<Province> provincesList = mapper.readValue(portListFile, new TypeReference<List<Province>>(){});
-		
-		return provincesList;
-	}
-	
-	@RequestMapping(value = "/provinces/{provinceCode}/stats", method = RequestMethod.GET)
-	@ApiOperation("Returns stats for a specific province.")
-	public List<PortOfEntry> getProvincialStats() throws IOException {
-		ObjectMapper mapper = new ObjectMapper();
-
-		File portListFile = new ClassPathResource("port-list-commercial.json").getFile();
-		List<PortOfEntry> poeList = mapper.readValue(portListFile, new TypeReference<List<PortOfEntry>>(){});
-		
-		return poeList;
-	}
-
 }
