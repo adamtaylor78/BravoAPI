@@ -1,14 +1,12 @@
 package ca.gc.cbsa.mcoe.bravo.controller;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.javafaker.Faker;
 
 import ca.gc.cbsa.mcoe.bravo.domain.BorderStats;
 import ca.gc.cbsa.mcoe.bravo.domain.PortOfEntry;
@@ -40,8 +37,15 @@ public class PortsOfEntryController {
 	public List<PortOfEntry> getPortsOfEntry() throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 
-		File portListFile = new ClassPathResource("port-list-commercial.json").getFile();
-		List<PortOfEntry> poeList = mapper.readValue(portListFile, new TypeReference<List<PortOfEntry>>(){});
+		ClassPathResource portListResource = new ClassPathResource("port-list-commercial.json");
+		
+		String portListJSONString;
+		
+		try (InputStream portListInputStream = portListResource.getInputStream()) {
+			portListJSONString = IOUtils.toString(portListInputStream, "UTF-8"); 
+		}
+		
+		List<PortOfEntry> poeList = mapper.readValue(portListJSONString, new TypeReference<List<PortOfEntry>>(){});
 		
 		return poeList;
 	}
@@ -51,8 +55,15 @@ public class PortsOfEntryController {
 	public PortOfEntry getPortOfEntryByWorkLocation(@ApiParam("Work location code.  Example: 0453") @PathVariable(value = "workLocationCode") String workLocationCode) throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 
-		File portListFile = new ClassPathResource("port-list-commercial.json").getFile();
-		List<PortOfEntry> poeList = mapper.readValue(portListFile, new TypeReference<List<PortOfEntry>>(){});
+		ClassPathResource portListResource = new ClassPathResource("port-list-commercial.json");
+		
+		String portListJSONString;
+		
+		try (InputStream portListInputStream = portListResource.getInputStream()) {
+			portListJSONString = IOUtils.toString(portListInputStream, "UTF-8"); 
+		}
+		
+		List<PortOfEntry> poeList = mapper.readValue(portListJSONString, new TypeReference<List<PortOfEntry>>(){});
 		
 		for (PortOfEntry poe : poeList) {
 			if (poe.getPortWorkLocationCode().equals(workLocationCode)) {

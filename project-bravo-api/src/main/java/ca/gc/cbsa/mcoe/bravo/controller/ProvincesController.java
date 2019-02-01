@@ -1,14 +1,12 @@
 package ca.gc.cbsa.mcoe.bravo.controller;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.javafaker.Faker;
 
 import ca.gc.cbsa.mcoe.bravo.domain.BorderStats;
 import ca.gc.cbsa.mcoe.bravo.domain.ProjectBravoApiConstants;
@@ -35,8 +32,15 @@ public class ProvincesController {
 	public List<Province> getProvinces() throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 
-		File portListFile = new ClassPathResource("provinces-list.json").getFile();
-		List<Province> provincesList = mapper.readValue(portListFile, new TypeReference<List<Province>>(){});
+		ClassPathResource provincesListResource = new ClassPathResource("provinces-list.json");
+		
+		String provincesListJSONString;
+		
+		try (InputStream provincesListInputStream = provincesListResource.getInputStream()) {
+			provincesListJSONString = IOUtils.toString(provincesListInputStream, "UTF-8"); 
+		}
+		
+		List<Province> provincesList = mapper.readValue(provincesListJSONString, new TypeReference<List<Province>>(){});
 		
 		return provincesList;
 	}
