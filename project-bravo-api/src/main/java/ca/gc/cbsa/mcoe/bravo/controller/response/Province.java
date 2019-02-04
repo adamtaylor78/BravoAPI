@@ -1,4 +1,4 @@
-package ca.gc.cbsa.mcoe.bravo.domain;
+package ca.gc.cbsa.mcoe.bravo.controller.response;
 
 public class Province {
 

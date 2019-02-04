@@ -25,6 +25,4 @@ public class PortStats {
 		return "PortStats [port=" + port + ", counts=" + counts + "]";
 	}
 	
-	
-	
 }

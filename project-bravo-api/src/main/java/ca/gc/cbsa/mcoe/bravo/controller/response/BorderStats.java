@@ -1,4 +1,7 @@
-package ca.gc.cbsa.mcoe.bravo.domain;
+package ca.gc.cbsa.mcoe.bravo.controller.response;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import io.swagger.annotations.ApiModel;
 
@@ -7,10 +10,15 @@ public class BorderStats {
 
 	private String timestamp;
 	private Long total;
+	@JsonInclude(Include.NON_NULL)
 	private Long totalSecondary;
+	@JsonInclude(Include.NON_NULL)
 	private Long airTotal;
+	@JsonInclude(Include.NON_NULL)
 	private Long landTotal;
+	@JsonInclude(Include.NON_NULL)
 	private Long airSecondaryTotal;
+	@JsonInclude(Include.NON_NULL)
 	private Long landSecondaryTotal;
 	
 	public String getTimestamp() {

@@ -3,6 +3,7 @@ package ca.gc.cbsa.mcoe.bravo.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -18,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ca.gc.cbsa.mcoe.bravo.domain.BorderStats;
-import ca.gc.cbsa.mcoe.bravo.domain.PortOfEntry;
-import ca.gc.cbsa.mcoe.bravo.domain.ProjectBravoApiConstants;
+import ca.gc.cbsa.mcoe.bravo.ProjectBravoApiConstants;
+import ca.gc.cbsa.mcoe.bravo.controller.response.BorderStats;
+import ca.gc.cbsa.mcoe.bravo.controller.response.PortOfEntry;
 import ca.gc.cbsa.mcoe.bravo.repository.HourlyStatsRepository;
 import ca.gc.cbsa.mcoe.bravo.util.StatsUtil;
 import io.swagger.annotations.ApiOperation;
@@ -80,6 +81,8 @@ public class PortsOfEntryController {
 			@ApiParam("Time delimiter.  Valid values: hour, day, month, year.") @RequestParam("timeDelimiter") String timeDelimiter,
 			@ApiParam("Start Date in Eastern Standard Time.  Format: yyyy-MM-dd HH:mm") @RequestParam("startDate") String startDate,
 			@ApiParam("End Date in Eastern Standard Time.  Format: yyyy-MM-dd HH:mm") @RequestParam("endDate") String endDate) throws ParseException {
+		List<BorderStats> portOfEntryStatsList = new ArrayList<BorderStats>();
+		
 		if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_HOURLY)) {
 			return StatsUtil.buildMockStats(Calendar.HOUR, mode, startDate, endDate);
 			
