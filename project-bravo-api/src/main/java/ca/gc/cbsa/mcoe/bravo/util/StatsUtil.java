@@ -66,7 +66,7 @@ public class StatsUtil {
 		
 	}
 	
-	public static ProvincialStats buildMockProvincialComparisonStats(int calendarUnit, int mode, String startDate, String endDate) throws ParseException, IOException {
+	public static ProvincialStats buildMockProvincialStats(int calendarUnit, int mode, String startDate, String endDate) throws ParseException, IOException {
 		ProvincialStats provincialStats = new ProvincialStats();
 		
 		ObjectMapper mapper = new ObjectMapper();
