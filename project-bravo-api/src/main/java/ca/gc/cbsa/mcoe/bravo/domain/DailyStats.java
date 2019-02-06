@@ -3,7 +3,9 @@ package ca.gc.cbsa.mcoe.bravo.domain;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection="Daily")
 public class DailyStats {
 
 	@Id

@@ -39,6 +39,9 @@ import io.swagger.annotations.ApiParam;
 public class PortsOfEntryController {
 
 	@Autowired
+	private StatsUtil bravoStatsUtil;
+	
+	@Autowired
 	private HourlyStatsRepository hourlyStatsRepository;
 	
 	@Autowired
@@ -96,7 +99,7 @@ public class PortsOfEntryController {
 	@ApiOperation("Returns stats for a specific POE by work location by a specific date range. Returns 404 if not found.")
 	public BorderStats getPortOfEntryStatsByWorkLocation(
 			@ApiParam("Work location code.  Example: 0453") @PathVariable(value = "workLocationCode") String workLocationCode,
-			@ApiParam("Mode.  1 = Commercial Hwy, 2 = Commercial Rail, 3 = Commercial Marine, 4 = Commercial Air, 5 = Commercial Multi, 6 = Travellers Hwy, 7 = Travellers Rail, 8 = Travellers Marine, 9 = Travellers Air, 10 = Travellers Multi") @RequestParam("mode") Integer mode,
+			@ApiParam("Mode.  1 = Commercial Hwy, 2 = Commercial Rail, 3 = Commercial Marine, 4 = Commercial Air, 5 = Commercial Multi, 6 = Travellers Hwy, 7 = Travellers Rail, 8 = Travellers Marine, 9 = Travellers Air, 10 = Travellers Multi") @RequestParam(value="mode") Integer mode,
 			@ApiParam("Time delimiter.  Valid values: hour, day, month, year.") @RequestParam("timeDelimiter") String timeDelimiter,
 			@ApiParam("Start Date in Eastern Standard Time.  Format: yyyy-MM-dd HH:mm") @RequestParam("startDate") String startDate,
 			@ApiParam("End Date in Eastern Standard Time.  Format: yyyy-MM-dd HH:mm") @RequestParam("endDate") String endDate)
@@ -104,7 +107,7 @@ public class PortsOfEntryController {
 		BorderStats borderStats = new BorderStats();
 
 		if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_HOURLY)) {
-			if (mode > 10) {
+			if (mode < 6) {
 				List<HourlyStats> hourlyStatsList = hourlyStatsRepository.findHourlyStatsBetween(startDate, endDate);
 				
 				for (HourlyStats hourlyStats : hourlyStatsList) {
@@ -124,11 +127,14 @@ public class PortsOfEntryController {
 						}
 					}
 				}
+				if (!borderStats.getStats().isEmpty()) {
+					borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(Calendar.HOUR, mode));
+				}
 			} else {
-				return StatsUtil.buildMockStats(Calendar.HOUR, mode, startDate, endDate);
+				return bravoStatsUtil.buildMockStats(Calendar.HOUR, mode, startDate, endDate);
 			}
 		} else if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_DAILY)) {
-			if (mode > 10) {
+			if (mode < 6) {
 				List<DailyStats> dailyStatsList = dailyStatsRepository.findDailyStatsBetween(startDate, endDate);
 				
 				for (DailyStats dailyStats : dailyStatsList) {
@@ -148,13 +154,14 @@ public class PortsOfEntryController {
 						}
 					}
 				}
+				if (!borderStats.getStats().isEmpty()) {
+					borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(Calendar.DAY_OF_MONTH, mode));
+				}
 			} else {
-				return StatsUtil.buildMockStats(Calendar.DAY_OF_MONTH, mode, startDate, endDate);
+				return bravoStatsUtil.buildMockStats(Calendar.DAY_OF_MONTH, mode, startDate, endDate);
 			}
 		} else if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_MONTHLY)) {
-			//return StatsUtil.buildMockStats(Calendar.DAY_OF_MONTH, mode, startDate, endDate);
-			
-			if (mode > 10) {
+			if (mode < 6) {
 				List<MonthlyStats> monthlyStatsList = monthlyStatsRepository.findMonthlyStatsBetween(startDate, endDate);
 				
 				for (MonthlyStats monthlyStats : monthlyStatsList) {
@@ -174,11 +181,14 @@ public class PortsOfEntryController {
 						}
 					}
 				}
+				if (!borderStats.getStats().isEmpty()) {
+					borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(Calendar.MONTH, mode));
+				}
 			} else {
-				return StatsUtil.buildMockStats(Calendar.MONTH, mode, startDate, endDate);
+				return bravoStatsUtil.buildMockStats(Calendar.MONTH, mode, startDate, endDate);
 			}
 		} else if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_ANNUAL)) {
-			return StatsUtil.buildMockStats(Calendar.YEAR, mode, startDate, endDate);
+			return bravoStatsUtil.buildMockStats(Calendar.YEAR, mode, startDate, endDate);
 		}
 
 		return borderStats;
