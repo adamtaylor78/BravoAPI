@@ -65,11 +65,13 @@ public class StatsUtil {
 				travellers.setLandSecondaryTotal(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
 				travellers.setLandTotal(Long.valueOf(faker.number().numberBetween(75000, 150000) / divider));
 				travellers.setTotalSecondary(Long.valueOf(faker.number().numberBetween(15000, 25000) / divider));
+				travellers.setTotal(Long.valueOf(faker.number().numberBetween(100000, 250000) / divider));
 				vehicles.setAirSecondaryTotal(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
 				vehicles.setAirTotal(Long.valueOf(faker.number().numberBetween(25000, 75000) / divider));
 				vehicles.setLandSecondaryTotal(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
 				vehicles.setLandTotal(Long.valueOf(faker.number().numberBetween(75000, 150000) / divider));
 				vehicles.setTotalSecondary(Long.valueOf(faker.number().numberBetween(15000, 25000) / divider));
+				vehicles.setTotal(Long.valueOf(faker.number().numberBetween(100000, 250000) / divider));
 				stats.setTravellers(travellers);
 				stats.setVehicles(vehicles);
 			}
@@ -146,11 +148,13 @@ public class StatsUtil {
 				travellers.setLandSecondaryTotal(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
 				travellers.setLandTotal(Long.valueOf(faker.number().numberBetween(75000, 150000) / divider));
 				travellers.setTotalSecondary(Long.valueOf(faker.number().numberBetween(15000, 25000) / divider));
+				travellers.setTotal(Long.valueOf(faker.number().numberBetween(100000, 250000) / divider));
 				vehicles.setAirSecondaryTotal(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
 				vehicles.setAirTotal(Long.valueOf(faker.number().numberBetween(25000, 75000) / divider));
 				vehicles.setLandSecondaryTotal(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
 				vehicles.setLandTotal(Long.valueOf(faker.number().numberBetween(75000, 150000) / divider));
 				vehicles.setTotalSecondary(Long.valueOf(faker.number().numberBetween(15000, 25000) / divider));
+				vehicles.setTotal(Long.valueOf(faker.number().numberBetween(100000, 250000) / divider));
 				stats.setTravellers(travellers);
 				stats.setVehicles(vehicles);
 			}
