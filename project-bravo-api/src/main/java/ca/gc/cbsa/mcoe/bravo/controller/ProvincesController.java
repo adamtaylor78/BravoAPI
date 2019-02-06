@@ -18,8 +18,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.gc.cbsa.mcoe.bravo.ProjectBravoApiConstants;
+import ca.gc.cbsa.mcoe.bravo.controller.response.BorderStats;
 import ca.gc.cbsa.mcoe.bravo.controller.response.Province;
-import ca.gc.cbsa.mcoe.bravo.controller.response.ProvincialStats;
 import ca.gc.cbsa.mcoe.bravo.util.StatsUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -47,7 +47,7 @@ public class ProvincesController {
 	
 	@RequestMapping(value = "/provinces/{provinceCode}/stats", method = RequestMethod.GET)
 	@ApiOperation("Returns stats for a specific Province by province code for a specific date range. Returns 404 if not found.")
-	public ProvincialStats getProvincialStats(@ApiParam("Province code.  Example: ON") @PathVariable(value = "provinceCode") String provinceCode,
+	public BorderStats getProvincialStats(@ApiParam("Province code.  Example: ON") @PathVariable(value = "provinceCode") String provinceCode,
 			@ApiParam("Mode.  1 = Commercial Hwy, 2 = Commercial Rail, 3 = Commercial Marine, 4 = Commercial Air, 5 = Commercial Multi, 6 = Travellers Hwy, 7 = Travellers Rail, 8 = Travellers Marine, 9 = Travellers Air, 10 = Travellers Multi") @RequestParam("mode") Integer mode,
 			@ApiParam("Time delimiter.  Valid values: hour, day, month, year.") @RequestParam("timeDelimiter") String timeDelimiter,
 			@ApiParam("Start Date in Eastern Standard Time.  Format: yyyy-MM-dd HH:mm") @RequestParam("startDate") String startDate,

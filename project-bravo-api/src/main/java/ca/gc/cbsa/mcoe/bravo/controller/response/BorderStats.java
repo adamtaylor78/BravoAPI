@@ -1,5 +1,8 @@
 package ca.gc.cbsa.mcoe.bravo.controller.response;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -8,60 +11,34 @@ import io.swagger.annotations.ApiModel;
 @ApiModel(description = "Stats for a specific Port of Entry.")
 public class BorderStats {
 
-	private String timestamp;
-	private Long total;
-	@JsonInclude(Include.NON_NULL)
-	private Long totalSecondary;
-	@JsonInclude(Include.NON_NULL)
-	private Long airTotal;
-	@JsonInclude(Include.NON_NULL)
-	private Long landTotal;
-	@JsonInclude(Include.NON_NULL)
-	private Long airSecondaryTotal;
-	@JsonInclude(Include.NON_NULL)
-	private Long landSecondaryTotal;
+	private List<BorderStatsCounts> stats;
+	private AnnualComparisonStats annualComparisonStats;
+	@JsonInclude(Include.NON_EMPTY)
+	private List<ProvincialComparisonStats> provincialComparisonStats;
 	
-	public String getTimestamp() {
-		return timestamp;
+	public List<BorderStatsCounts> getStats() {
+		if (stats == null) {
+			stats = new ArrayList<BorderStatsCounts>();
+		}
+		return stats;
 	}
-	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
+	public void setStats(List<BorderStatsCounts> stats) {
+		this.stats = stats;
 	}
-	public Long getTotal() {
-		return total;
+	public AnnualComparisonStats getAnnualComparisonStats() {
+		return annualComparisonStats;
 	}
-	public void setTotal(Long total) {
-		this.total = total;
+	public void setAnnualComparisonStats(AnnualComparisonStats annualComparisonStats) {
+		this.annualComparisonStats = annualComparisonStats;
 	}
-	public Long getTotalSecondary() {
-		return totalSecondary;
+	public List<ProvincialComparisonStats> getProvincialComparisonStats() {
+		if (provincialComparisonStats == null) {
+			provincialComparisonStats = new ArrayList<ProvincialComparisonStats>();
+		}
+		return provincialComparisonStats;
 	}
-	public void setTotalSecondary(Long totalSecondary) {
-		this.totalSecondary = totalSecondary;
-	}
-	public Long getAirTotal() {
-		return airTotal;
-	}
-	public void setAirTotal(Long airTotal) {
-		this.airTotal = airTotal;
-	}
-	public Long getLandTotal() {
-		return landTotal;
-	}
-	public void setLandTotal(Long landTotal) {
-		this.landTotal = landTotal;
-	}
-	public Long getAirSecondaryTotal() {
-		return airSecondaryTotal;
-	}
-	public void setAirSecondaryTotal(Long airSecondaryTotal) {
-		this.airSecondaryTotal = airSecondaryTotal;
-	}
-	public Long getLandSecondaryTotal() {
-		return landSecondaryTotal;
-	}
-	public void setLandSecondaryTotal(Long landSecondaryTotal) {
-		this.landSecondaryTotal = landSecondaryTotal;
+	public void setProvincialComparisonStats(List<ProvincialComparisonStats> provincialComparisonStats) {
+		this.provincialComparisonStats = provincialComparisonStats;
 	}
 	
 }
