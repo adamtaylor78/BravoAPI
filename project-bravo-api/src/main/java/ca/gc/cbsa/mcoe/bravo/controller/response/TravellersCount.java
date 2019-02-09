@@ -1,12 +1,20 @@
 package ca.gc.cbsa.mcoe.bravo.controller.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 public class TravellersCount {
 
+	@JsonInclude(Include.NON_NULL)
 	private Long airSecondaryTotal;
+	@JsonInclude(Include.NON_NULL)
 	private Long airTotal;
+	@JsonInclude(Include.NON_NULL)
 	private Long landSecondaryTotal;
+	@JsonInclude(Include.NON_NULL)
 	private Long landTotal;
 	private Long total;
+	@JsonInclude(Include.NON_NULL)
 	private Long totalSecondary;
 	
 	public Long getAirSecondaryTotal() {
