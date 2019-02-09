@@ -1,4 +1,4 @@
-package ca.gc.cbsa.mcoe.bravo.repository;
+package ca.gc.cbsa.mcoe.bravo.repository.commercial;
 
 import java.util.List;
 

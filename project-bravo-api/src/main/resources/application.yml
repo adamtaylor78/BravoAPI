@@ -1,0 +1,12 @@
+server:
+  port: 8081
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
+mongodb:
+  commercial:
+    database: CommercialStat
+    uri: mongodb://mcoe-mongodb-rg:n26E3KLpB7by04YXPMbrhSUQ6HJt2t7EzHPGGgWAzt3RGA5txI7GDgZyK1Fn5K0ArIK2kPo7amlhUwTjxgWTaw==@mcoe-mongodb-rg.documents.azure.com:10255/?ssl=true&replicaSet=globaldb
+  travellers:
+    database: TravellerStat
+    uri: mongodb://mcoe-mongodb-rg:n26E3KLpB7by04YXPMbrhSUQ6HJt2t7EzHPGGgWAzt3RGA5txI7GDgZyK1Fn5K0ArIK2kPo7amlhUwTjxgWTaw==@mcoe-mongodb-rg.documents.azure.com:10255/?ssl=true&replicaSet=globaldb

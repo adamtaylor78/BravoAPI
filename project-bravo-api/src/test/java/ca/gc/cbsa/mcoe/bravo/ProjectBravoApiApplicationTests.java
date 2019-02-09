@@ -14,9 +14,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ca.gc.cbsa.mcoe.bravo.domain.DailyStats;
 import ca.gc.cbsa.mcoe.bravo.domain.HourlyStats;
 import ca.gc.cbsa.mcoe.bravo.domain.MonthlyStats;
-import ca.gc.cbsa.mcoe.bravo.repository.DailyStatsRepository;
-import ca.gc.cbsa.mcoe.bravo.repository.HourlyStatsRepository;
-import ca.gc.cbsa.mcoe.bravo.repository.MonthlyStatsRepository;
+import ca.gc.cbsa.mcoe.bravo.repository.commercial.DailyStatsRepository;
+import ca.gc.cbsa.mcoe.bravo.repository.commercial.HourlyStatsRepository;
+import ca.gc.cbsa.mcoe.bravo.repository.commercial.MonthlyStatsRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

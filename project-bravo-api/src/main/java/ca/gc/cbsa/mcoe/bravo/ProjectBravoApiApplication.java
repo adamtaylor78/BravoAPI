@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import ca.gc.cbsa.mcoe.bravo.domain.HourlyStats;
-import ca.gc.cbsa.mcoe.bravo.repository.HourlyStatsRepository;
+import ca.gc.cbsa.mcoe.bravo.repository.commercial.HourlyStatsRepository;
 
 @SpringBootApplication
 public class ProjectBravoApiApplication implements CommandLineRunner {
