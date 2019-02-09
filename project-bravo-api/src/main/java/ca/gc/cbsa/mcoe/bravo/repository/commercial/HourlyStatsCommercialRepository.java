@@ -6,14 +6,14 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import ca.gc.cbsa.mcoe.bravo.domain.HourlyStats;
+import ca.gc.cbsa.mcoe.bravo.domain.commercial.HourlyStatsCommercial;
 
 @Repository
-public interface HourlyStatsRepository extends MongoRepository<HourlyStats, Integer> {
+public interface HourlyStatsCommercialRepository extends MongoRepository<HourlyStatsCommercial, Integer> {
 
-	HourlyStats findById(String id);
+	HourlyStatsCommercial findById(String id);
 	
 	@Query("{'id': {$gte: ?0, $lte:?1 }}")
-	List<HourlyStats> findHourlyStatsBetween(String startDate, String endDate);
+	List<HourlyStatsCommercial> findHourlyStatsBetween(String startDate, String endDate);
 	
 }

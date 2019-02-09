@@ -1,8 +1,8 @@
-package ca.gc.cbsa.mcoe.bravo.domain;
+package ca.gc.cbsa.mcoe.bravo.domain.commercial;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
-public class PortStatsCounts {
+public class PortStatsCountsCommercial {
 
 	@Field("Mode")
 	private String mode;

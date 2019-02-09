@@ -11,47 +11,83 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import ca.gc.cbsa.mcoe.bravo.domain.DailyStats;
-import ca.gc.cbsa.mcoe.bravo.domain.HourlyStats;
-import ca.gc.cbsa.mcoe.bravo.domain.MonthlyStats;
-import ca.gc.cbsa.mcoe.bravo.repository.commercial.DailyStatsRepository;
-import ca.gc.cbsa.mcoe.bravo.repository.commercial.HourlyStatsRepository;
-import ca.gc.cbsa.mcoe.bravo.repository.commercial.MonthlyStatsRepository;
+import ca.gc.cbsa.mcoe.bravo.domain.commercial.DailyStatsCommercial;
+import ca.gc.cbsa.mcoe.bravo.domain.commercial.HourlyStatsCommercial;
+import ca.gc.cbsa.mcoe.bravo.domain.commercial.MonthlyStatsCommercial;
+import ca.gc.cbsa.mcoe.bravo.domain.travellers.DailyStatsTravellers;
+import ca.gc.cbsa.mcoe.bravo.domain.travellers.HourlyStatsTravellers;
+import ca.gc.cbsa.mcoe.bravo.domain.travellers.MonthlyStatsTravellers;
+import ca.gc.cbsa.mcoe.bravo.repository.commercial.DailyStatsCommercialRepository;
+import ca.gc.cbsa.mcoe.bravo.repository.commercial.HourlyStatsCommercialRepository;
+import ca.gc.cbsa.mcoe.bravo.repository.commercial.MonthlyStatsCommercialRepository;
+import ca.gc.cbsa.mcoe.bravo.repository.travellers.DailyStatsTravellersRepository;
+import ca.gc.cbsa.mcoe.bravo.repository.travellers.HourlyStatsTravellersRepository;
+import ca.gc.cbsa.mcoe.bravo.repository.travellers.MonthlyStatsTravellersRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ProjectBravoApiApplicationTests {
 
 	@Autowired
-	private HourlyStatsRepository hourlyStatsRepository;
+	private HourlyStatsCommercialRepository hourlyStatsCommercialRepository;
 	
 	@Autowired
-	private DailyStatsRepository dailyStatsRepository;
+	private DailyStatsCommercialRepository dailyStatsCommercialRepository;
 	
 	@Autowired
-	private MonthlyStatsRepository monthlyStatsRepository;
+	private MonthlyStatsCommercialRepository monthlyStatsCommercialRepository;
+	
+	@Autowired
+	private HourlyStatsTravellersRepository hourlyStatsTravellersRepository;
+	
+	@Autowired
+	private DailyStatsTravellersRepository dailyStatsTravellersRepository;
+	
+	@Autowired
+	private MonthlyStatsTravellersRepository monthlyStatsTravellersRepository;
 	
 	@Test
 	public void contextLoads() {
 	}
 	
 	@Test
-	public void testLoadHourlyStats() {
-		List<HourlyStats> hourlyStatsList = hourlyStatsRepository.findHourlyStatsBetween("2018-12-01 00:00", "2018-12-01 23:59");
+	public void testLoadHourlyCommercialStats() {
+		List<HourlyStatsCommercial> hourlyStatsList = hourlyStatsCommercialRepository.findHourlyStatsBetween("2018-12-01 00:00", "2018-12-01 23:59");
 		assertNotNull(hourlyStatsList);
 		assertTrue(hourlyStatsList.size() == 24);
 	}
 	
 	@Test
-	public void testLoadDailyStats() {
-		List<DailyStats> dailyStatsList = dailyStatsRepository.findDailyStatsBetween("2018-12-01 00:00", "2018-12-31 23:59");
+	public void testLoadDailyCommercialStats() {
+		List<DailyStatsCommercial> dailyStatsList = dailyStatsCommercialRepository.findDailyStatsBetween("2018-12-01 00:00", "2018-12-31 23:59");
 		assertNotNull(dailyStatsList);
 		assertTrue(dailyStatsList.size() == 31);
 	}
 	
 	@Test
-	public void testLoadMonthlyStats() {
-		List<MonthlyStats> monthlyStatsList = monthlyStatsRepository.findMonthlyStatsBetween("2018-01-00 00:00", "2018-12-31 23:59");
+	public void testLoadMonthlyCommercialStats() {
+		List<MonthlyStatsCommercial> monthlyStatsList = monthlyStatsCommercialRepository.findMonthlyStatsBetween("2018-01-00 00:00", "2018-12-31 23:59");
+		assertNotNull(monthlyStatsList);
+		assertTrue(monthlyStatsList.size() == 12);
+	}
+	
+	@Test
+	public void testLoadHourlyTravellersStats() {
+		List<HourlyStatsTravellers> hourlyStatsList = hourlyStatsTravellersRepository.findHourlyStatsBetween("2018-12-31 00:00", "2018-12-31 23:59");
+		assertNotNull(hourlyStatsList);
+		assertTrue(hourlyStatsList.size() == 24);
+	}
+	
+	@Test
+	public void testLoadDailyTravellersStats() {
+		List<DailyStatsTravellers> dailyStatsList = dailyStatsTravellersRepository.findDailyStatsBetween("2018-12-01 00:00", "2018-12-31 23:59");
+		assertNotNull(dailyStatsList);
+		assertTrue(dailyStatsList.size() == 31);
+	}
+	
+	@Test
+	public void testLoadMonthlyTravellersStats() {
+		List<MonthlyStatsTravellers> monthlyStatsList = monthlyStatsTravellersRepository.findMonthlyStatsBetween("2018-01-00 00:00", "2018-12-31 23:59");
 		assertNotNull(monthlyStatsList);
 		assertTrue(monthlyStatsList.size() == 12);
 	}

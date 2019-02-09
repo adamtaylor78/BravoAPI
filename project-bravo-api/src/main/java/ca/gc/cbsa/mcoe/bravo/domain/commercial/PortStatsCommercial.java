@@ -1,11 +1,11 @@
-package ca.gc.cbsa.mcoe.bravo.domain;
+package ca.gc.cbsa.mcoe.bravo.domain.commercial;
 
 import java.util.List;
 
-public class PortStats {
+public class PortStatsCommercial {
 
 	private String port;
-	private List<PortStatsCounts> counts;
+	private List<PortStatsCountsCommercial> counts;
 	
 	public String getPort() {
 		return port;
@@ -13,10 +13,10 @@ public class PortStats {
 	public void setPort(String port) {
 		this.port = port;
 	}
-	public List<PortStatsCounts> getCounts() {
+	public List<PortStatsCountsCommercial> getCounts() {
 		return counts;
 	}
-	public void setCounts(List<PortStatsCounts> counts) {
+	public void setCounts(List<PortStatsCountsCommercial> counts) {
 		this.counts = counts;
 	}
 	

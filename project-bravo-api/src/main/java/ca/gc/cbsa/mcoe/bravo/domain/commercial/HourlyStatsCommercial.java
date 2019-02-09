@@ -1,17 +1,17 @@
-package ca.gc.cbsa.mcoe.bravo.domain;
+package ca.gc.cbsa.mcoe.bravo.domain.commercial;
 
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection="Daily")
-public class DailyStats {
-
+@Document(collection="Hourly")
+public class HourlyStatsCommercial {
+	
 	@Id
 	private String id;
 	
-	private List<PortStats> ports;
+	private List<PortStatsCommercial> ports;
 
 	public String getId() {
 		return id;
@@ -21,17 +21,18 @@ public class DailyStats {
 		this.id = id;
 	}
 
-	public List<PortStats> getPorts() {
+	public List<PortStatsCommercial> getPorts() {
 		return ports;
 	}
 
-	public void setPorts(List<PortStats> ports) {
+	public void setPorts(List<PortStatsCommercial> ports) {
 		this.ports = ports;
 	}
 
 	@Override
 	public String toString() {
-		return "DailyStats [id=" + id + ", ports=" + ports + "]";
+		return "HourlyStats [id=" + id + ", ports=" + ports + "]";
 	}
+	
 	
 }

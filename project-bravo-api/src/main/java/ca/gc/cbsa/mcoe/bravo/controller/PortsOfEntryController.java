@@ -23,14 +23,14 @@ import ca.gc.cbsa.mcoe.bravo.controller.response.BorderStats;
 import ca.gc.cbsa.mcoe.bravo.controller.response.BorderStatsCounts;
 import ca.gc.cbsa.mcoe.bravo.controller.response.CommercialCount;
 import ca.gc.cbsa.mcoe.bravo.controller.response.PortOfEntry;
-import ca.gc.cbsa.mcoe.bravo.domain.DailyStats;
-import ca.gc.cbsa.mcoe.bravo.domain.HourlyStats;
-import ca.gc.cbsa.mcoe.bravo.domain.MonthlyStats;
-import ca.gc.cbsa.mcoe.bravo.domain.PortStats;
-import ca.gc.cbsa.mcoe.bravo.domain.PortStatsCounts;
-import ca.gc.cbsa.mcoe.bravo.repository.commercial.DailyStatsRepository;
-import ca.gc.cbsa.mcoe.bravo.repository.commercial.HourlyStatsRepository;
-import ca.gc.cbsa.mcoe.bravo.repository.commercial.MonthlyStatsRepository;
+import ca.gc.cbsa.mcoe.bravo.domain.commercial.DailyStatsCommercial;
+import ca.gc.cbsa.mcoe.bravo.domain.commercial.HourlyStatsCommercial;
+import ca.gc.cbsa.mcoe.bravo.domain.commercial.MonthlyStatsCommercial;
+import ca.gc.cbsa.mcoe.bravo.domain.commercial.PortStatsCommercial;
+import ca.gc.cbsa.mcoe.bravo.domain.commercial.PortStatsCountsCommercial;
+import ca.gc.cbsa.mcoe.bravo.repository.commercial.DailyStatsCommercialRepository;
+import ca.gc.cbsa.mcoe.bravo.repository.commercial.HourlyStatsCommercialRepository;
+import ca.gc.cbsa.mcoe.bravo.repository.commercial.MonthlyStatsCommercialRepository;
 import ca.gc.cbsa.mcoe.bravo.util.StatsUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -42,13 +42,13 @@ public class PortsOfEntryController {
 	private StatsUtil bravoStatsUtil;
 	
 	@Autowired
-	private HourlyStatsRepository hourlyStatsRepository;
+	private HourlyStatsCommercialRepository hourlyStatsRepository;
 	
 	@Autowired
-	private DailyStatsRepository dailyStatsRepository;
+	private DailyStatsCommercialRepository dailyStatsRepository;
 	
 	@Autowired
-	private MonthlyStatsRepository monthlyStatsRepository;
+	private MonthlyStatsCommercialRepository monthlyStatsRepository;
 
 	@RequestMapping(value = "/ports-of-entry", method = RequestMethod.GET)
 	@ApiOperation("Returns a list of POEs.")
@@ -108,15 +108,15 @@ public class PortsOfEntryController {
 
 		if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_HOURLY)) {
 			if (mode < 6) {
-				List<HourlyStats> hourlyStatsList = hourlyStatsRepository.findHourlyStatsBetween(startDate, endDate);
+				List<HourlyStatsCommercial> hourlyStatsList = hourlyStatsRepository.findHourlyStatsBetween(startDate, endDate);
 				
-				for (HourlyStats hourlyStats : hourlyStatsList) {
+				for (HourlyStatsCommercial hourlyStats : hourlyStatsList) {
 					BorderStatsCounts stats = new BorderStatsCounts();
 					stats.setTimestamp(hourlyStats.getId());
 					
-					for (PortStats portStats : hourlyStats.getPorts()) {
+					for (PortStatsCommercial portStats : hourlyStats.getPorts()) {
 						if (portStats.getPort().equals(workLocationCode)) {
-							for (PortStatsCounts counts : portStats.getCounts()) {
+							for (PortStatsCountsCommercial counts : portStats.getCounts()) {
 								if (counts.getMode().equals(mode.toString())) {
 									CommercialCount conveyances = new CommercialCount();
 									conveyances.setTotal(counts.getCount());
@@ -135,15 +135,15 @@ public class PortsOfEntryController {
 			}
 		} else if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_DAILY)) {
 			if (mode < 6) {
-				List<DailyStats> dailyStatsList = dailyStatsRepository.findDailyStatsBetween(startDate, endDate);
+				List<DailyStatsCommercial> dailyStatsList = dailyStatsRepository.findDailyStatsBetween(startDate, endDate);
 				
-				for (DailyStats dailyStats : dailyStatsList) {
+				for (DailyStatsCommercial dailyStats : dailyStatsList) {
 					BorderStatsCounts stats = new BorderStatsCounts();
 					stats.setTimestamp(dailyStats.getId());
 					
-					for (PortStats portStats : dailyStats.getPorts()) {
+					for (PortStatsCommercial portStats : dailyStats.getPorts()) {
 						if (portStats.getPort().equals(workLocationCode)) {
-							for (PortStatsCounts counts : portStats.getCounts()) {
+							for (PortStatsCountsCommercial counts : portStats.getCounts()) {
 								if (counts.getMode().equals(mode.toString())) {
 									CommercialCount conveyances = new CommercialCount();
 									conveyances.setTotal(counts.getCount());
@@ -162,15 +162,15 @@ public class PortsOfEntryController {
 			}
 		} else if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_MONTHLY)) {
 			if (mode < 6) {
-				List<MonthlyStats> monthlyStatsList = monthlyStatsRepository.findMonthlyStatsBetween(startDate, endDate);
+				List<MonthlyStatsCommercial> monthlyStatsList = monthlyStatsRepository.findMonthlyStatsBetween(startDate, endDate);
 				
-				for (MonthlyStats monthlyStats : monthlyStatsList) {
+				for (MonthlyStatsCommercial monthlyStats : monthlyStatsList) {
 					BorderStatsCounts stats = new BorderStatsCounts();
 					stats.setTimestamp(monthlyStats.getId());
 					
-					for (PortStats portStats : monthlyStats.getPorts()) {
+					for (PortStatsCommercial portStats : monthlyStats.getPorts()) {
 						if (portStats.getPort().equals(workLocationCode)) {
-							for (PortStatsCounts counts : portStats.getCounts()) {
+							for (PortStatsCountsCommercial counts : portStats.getCounts()) {
 								if (counts.getMode().equals(mode.toString())) {
 									CommercialCount conveyances = new CommercialCount();
 									conveyances.setTotal(counts.getCount());
