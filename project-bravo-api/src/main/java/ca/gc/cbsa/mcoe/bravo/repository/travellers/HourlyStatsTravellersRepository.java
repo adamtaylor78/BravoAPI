@@ -13,7 +13,7 @@ public interface HourlyStatsTravellersRepository extends MongoRepository<HourlyS
 
 	HourlyStatsTravellers findById(String id);
 	
-	@Query("{'id': {$gte: ?0, $lte:?1 }}")
+	@Query(value="{'id': {$gte: ?0, $lte:?1 }}", sort="{ id: 1 }")
 	List<HourlyStatsTravellers> findHourlyStatsBetween(String startDate, String endDate);
 	
 }

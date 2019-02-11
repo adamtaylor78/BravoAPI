@@ -13,7 +13,7 @@ public interface HourlyStatsCommercialRepository extends MongoRepository<HourlyS
 
 	HourlyStatsCommercial findById(String id);
 	
-	@Query("{'id': {$gte: ?0, $lte:?1 }}")
+	@Query(value="{'id': {$gte: ?0, $lte:?1 }}", sort="{ id: 1 }")
 	List<HourlyStatsCommercial> findHourlyStatsBetween(String startDate, String endDate);
 	
 }

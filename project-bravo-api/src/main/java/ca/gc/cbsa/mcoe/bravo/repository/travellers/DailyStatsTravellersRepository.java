@@ -11,7 +11,7 @@ public interface DailyStatsTravellersRepository extends MongoRepository<DailySta
 
 	DailyStatsTravellers findById(String id);
 	
-	@Query("{'id': {$gte: ?0, $lte:?1 }}")
+	@Query(value="{'id': {$gte: ?0, $lte:?1 }}", sort="{ id: 1 }")
 	List<DailyStatsTravellers> findDailyStatsBetween(String startDate, String endDate);
 	
 }

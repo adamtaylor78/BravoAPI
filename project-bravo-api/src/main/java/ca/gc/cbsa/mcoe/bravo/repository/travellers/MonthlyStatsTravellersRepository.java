@@ -11,7 +11,7 @@ public interface MonthlyStatsTravellersRepository extends MongoRepository<Monthl
 
 	MonthlyStatsTravellers findById(String id);
 	
-	@Query("{'id': {$gte: ?0, $lte:?1 }}")
+	@Query(value="{'id': {$gte: ?0, $lte:?1 }}", sort="{ id: 1 }")
 	List<MonthlyStatsTravellers> findMonthlyStatsBetween(String startDate, String endDate);
 	
 }

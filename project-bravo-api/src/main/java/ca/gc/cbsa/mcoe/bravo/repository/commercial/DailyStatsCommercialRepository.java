@@ -11,7 +11,7 @@ public interface DailyStatsCommercialRepository extends MongoRepository<DailySta
 
 	DailyStatsCommercial findById(String id);
 	
-	@Query("{'id': {$gte: ?0, $lte:?1 }}")
+	@Query(value="{'id': {$gte: ?0, $lte:?1 }}", sort="{ id: 1 }")
 	List<DailyStatsCommercial> findDailyStatsBetween(String startDate, String endDate);
 	
 }

@@ -14,7 +14,6 @@ public class TravellersCount {
 	@JsonInclude(Include.NON_NULL)
 	private Long landTotal;
 	private Long total;
-	@JsonInclude(Include.NON_NULL)
 	private Long totalSecondary;
 	
 	public Long getAirSecondaryTotal() {

@@ -11,7 +11,7 @@ public interface MonthlyStatsCommercialRepository extends MongoRepository<Monthl
 
 	MonthlyStatsCommercial findById(String id);
 	
-	@Query("{'id': {$gte: ?0, $lte:?1 }}")
+	@Query(value="{'id': {$gte: ?0, $lte:?1 }}", sort="{ id: 1 }")
 	List<MonthlyStatsCommercial> findMonthlyStatsBetween(String startDate, String endDate);
 	
 }
