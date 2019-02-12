@@ -3,8 +3,12 @@ package ca.gc.cbsa.mcoe.bravo.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +45,7 @@ import ca.gc.cbsa.mcoe.bravo.repository.commercial.MonthlyStatsCommercialReposit
 import ca.gc.cbsa.mcoe.bravo.repository.travellers.DailyStatsTravellersRepository;
 import ca.gc.cbsa.mcoe.bravo.repository.travellers.HourlyStatsTravellersRepository;
 import ca.gc.cbsa.mcoe.bravo.repository.travellers.MonthlyStatsTravellersRepository;
+import ca.gc.cbsa.mcoe.bravo.util.DateUtil;
 import ca.gc.cbsa.mcoe.bravo.util.StatsUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -120,18 +125,23 @@ public class PortsOfEntryController {
 			@ApiParam("Work location code.  Example: 0453") @PathVariable(value = "workLocationCode") String workLocationCode,
 			@ApiParam("Mode.  1 = Commercial Hwy, 2 = Commercial Rail, 3 = Commercial Marine, 4 = Commercial Air, 5 = Commercial Multi, 6 = Travellers Hwy, 7 = Travellers Rail, 8 = Travellers Marine, 9 = Travellers Air, 10 = Travellers Multi") @RequestParam(value="mode") Integer mode,
 			@ApiParam("Time delimiter.  Valid values: hour, day, month, year.") @RequestParam("timeDelimiter") String timeDelimiter,
-			@ApiParam("Start Date in Eastern Standard Time.  Format: yyyy-MM-dd HH:mm") @RequestParam("startDate") String startDate,
-			@ApiParam("End Date in Eastern Standard Time.  Format: yyyy-MM-dd HH:mm") @RequestParam("endDate") String endDate)
+			@ApiParam("Start Date in Eastern Standard Time.  Format:  for hourly queries use 'yyyy-MM-dd HH:mm', for daily queries use 'yyyy-MM-dd', for monthly queries use 'yyyy-MM', for yearly queries use 'yyyy'") @RequestParam("startDate") String startDate,
+			@ApiParam("End Date in Eastern Standard Time.  Format:  for hourly queries use 'yyyy-MM-dd HH:mm', for daily queries use 'yyyy-MM-dd', for monthly queries use 'yyyy-MM', for yearly queries use 'yyyy'") @RequestParam("endDate") String endDate)
 			throws ParseException {
 		BorderStats borderStats = new BorderStats();
 
-		if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_HOURLY)) {
+		String fullStartDate = DateUtil.buildFullDateString(timeDelimiter, startDate);
+		String fullEndDate = DateUtil.buildFullDateString(timeDelimiter, endDate);
+		
+		Map<String,BorderStatsCounts> statsMap = buildEmptyStatsMap(timeDelimiter, mode, startDate, endDate);
+		
+		if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_HOURLY)) {
 			if (mode < 6) {
-				List<HourlyStatsCommercial> hourlyStatsList = hourlyStatsCommercialRepository.findHourlyStatsBetween(startDate, endDate);
+				List<HourlyStatsCommercial> hourlyStatsList = hourlyStatsCommercialRepository.findHourlyStatsBetween(fullStartDate, fullEndDate);
 				
 				for (HourlyStatsCommercial hourlyStats : hourlyStatsList) {
-					BorderStatsCounts stats = new BorderStatsCounts();
-					stats.setTimestamp(hourlyStats.getId());
+					BorderStatsCounts borderStatsCounts = new BorderStatsCounts();
+					borderStatsCounts.setTimestamp(hourlyStats.getId());
 					
 					for (PortStatsCommercial portStats : hourlyStats.getPorts()) {
 						if (portStats.getPort().equals(workLocationCode)) {
@@ -139,18 +149,16 @@ public class PortsOfEntryController {
 								if (counts.getMode().equals(mode.toString())) {
 									CommercialCount conveyances = new CommercialCount();
 									conveyances.setTotal(counts.getCount());
-									stats.setConveyances(conveyances);
-									borderStats.getStats().add(stats);
+									borderStatsCounts.setConveyances(conveyances);
+									statsMap.put(hourlyStats.getId(), borderStatsCounts);
 								}
 							}
 						}
 					}
 				}
-				if (!borderStats.getStats().isEmpty()) {
-					borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(Calendar.HOUR, mode));
-				}
+				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(Calendar.HOUR, mode));
 			} else {
-				List<HourlyStatsTravellers> hourlyStatsList = hourlyStatsTravellersRepository.findHourlyStatsBetween(startDate, endDate);
+				List<HourlyStatsTravellers> hourlyStatsList = hourlyStatsTravellersRepository.findHourlyStatsBetween(fullStartDate, fullEndDate);
 				
 				for (HourlyStatsTravellers hourlyStats : hourlyStatsList) {
 					BorderStatsCounts borderStatsCounts = new BorderStatsCounts();
@@ -167,21 +175,19 @@ public class PortsOfEntryController {
 								travellersCount.setTotalSecondary(counts.getCount());
 							}
 							borderStatsCounts.setTravellers(travellersCount);
-							borderStats.getStats().add(borderStatsCounts);
+							statsMap.put(hourlyStats.getId(), borderStatsCounts);
 						}
 					}
 				}
-				if (!borderStats.getStats().isEmpty()) {
-					borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(Calendar.HOUR, mode));
-				}
+				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(Calendar.HOUR, mode));
 			}
-		} else if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_DAILY)) {
+		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_DAILY)) {
 			if (mode < 6) {
-				List<DailyStatsCommercial> dailyStatsList = dailyStatsCommercialRepository.findDailyStatsBetween(startDate, endDate);
+				List<DailyStatsCommercial> dailyStatsList = dailyStatsCommercialRepository.findDailyStatsBetween(fullStartDate, fullEndDate);
 				
 				for (DailyStatsCommercial dailyStats : dailyStatsList) {
-					BorderStatsCounts stats = new BorderStatsCounts();
-					stats.setTimestamp(dailyStats.getId());
+					BorderStatsCounts borderStatsCounts = new BorderStatsCounts();
+					borderStatsCounts.setTimestamp(dailyStats.getId());
 					
 					for (PortStatsCommercial portStats : dailyStats.getPorts()) {
 						if (portStats.getPort().equals(workLocationCode)) {
@@ -189,18 +195,16 @@ public class PortsOfEntryController {
 								if (counts.getMode().equals(mode.toString())) {
 									CommercialCount conveyances = new CommercialCount();
 									conveyances.setTotal(counts.getCount());
-									stats.setConveyances(conveyances);
-									borderStats.getStats().add(stats);
+									borderStatsCounts.setConveyances(conveyances);
+									statsMap.put(dailyStats.getId(), borderStatsCounts);
 								}
 							}
 						}
 					}
 				}
-				if (!borderStats.getStats().isEmpty()) {
-					borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(Calendar.DAY_OF_MONTH, mode));
-				}
+				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(Calendar.DAY_OF_MONTH, mode));
 			} else {
-				List<DailyStatsTravellers> dailyStatsList = dailyStatsTravellersRepository.findDailyStatsBetween(startDate, endDate);
+				List<DailyStatsTravellers> dailyStatsList = dailyStatsTravellersRepository.findDailyStatsBetween(fullStartDate, fullEndDate);
 				
 				for (DailyStatsTravellers dailyStats : dailyStatsList) {
 					BorderStatsCounts borderStatsCounts = new BorderStatsCounts();
@@ -217,21 +221,19 @@ public class PortsOfEntryController {
 								travellersCount.setTotalSecondary(counts.getCount());
 							}
 							borderStatsCounts.setTravellers(travellersCount);
-							borderStats.getStats().add(borderStatsCounts);
+							statsMap.put(dailyStats.getId(), borderStatsCounts);
 						}
 					}
 				}
-				if (!borderStats.getStats().isEmpty()) {
-					borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(Calendar.DAY_OF_MONTH, mode));
-				}
+				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(Calendar.DAY_OF_MONTH, mode));
 			}
-		} else if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_MONTHLY)) {
+		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_MONTHLY)) {
 			if (mode < 6) {
-				List<MonthlyStatsCommercial> monthlyStatsList = monthlyStatsCommercialRepository.findMonthlyStatsBetween(startDate, endDate);
+				List<MonthlyStatsCommercial> monthlyStatsList = monthlyStatsCommercialRepository.findMonthlyStatsBetween(fullStartDate, fullEndDate);
 				
 				for (MonthlyStatsCommercial monthlyStats : monthlyStatsList) {
-					BorderStatsCounts stats = new BorderStatsCounts();
-					stats.setTimestamp(monthlyStats.getId());
+					BorderStatsCounts borderStatsCounts = new BorderStatsCounts();
+					borderStatsCounts.setTimestamp(monthlyStats.getId());
 					
 					for (PortStatsCommercial portStats : monthlyStats.getPorts()) {
 						if (portStats.getPort().equals(workLocationCode)) {
@@ -239,18 +241,16 @@ public class PortsOfEntryController {
 								if (counts.getMode().equals(mode.toString())) {
 									CommercialCount conveyances = new CommercialCount();
 									conveyances.setTotal(counts.getCount());
-									stats.setConveyances(conveyances);
-									borderStats.getStats().add(stats);
+									borderStatsCounts.setConveyances(conveyances);
+									statsMap.put(monthlyStats.getId(), borderStatsCounts);
 								}
 							}
 						}
 					}
 				}
-				if (!borderStats.getStats().isEmpty()) {
-					borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(Calendar.MONTH, mode));
-				}
+				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(Calendar.MONTH, mode));
 			} else {
-				List<MonthlyStatsTravellers> monthlyStatsList = monthlyStatsTravellersRepository.findMonthlyStatsBetween(startDate, endDate);
+				List<MonthlyStatsTravellers> monthlyStatsList = monthlyStatsTravellersRepository.findMonthlyStatsBetween(fullStartDate, fullEndDate);
 				
 				for (MonthlyStatsTravellers monthlyStats : monthlyStatsList) {
 					BorderStatsCounts borderStatsCounts = new BorderStatsCounts();
@@ -267,19 +267,60 @@ public class PortsOfEntryController {
 								travellersCount.setTotalSecondary(counts.getCount());
 							}
 							borderStatsCounts.setTravellers(travellersCount);
-							borderStats.getStats().add(borderStatsCounts);
+							statsMap.put(monthlyStats.getId(), borderStatsCounts);
 						}
 					}
 				}
-				if (!borderStats.getStats().isEmpty()) {
-					borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(Calendar.MONTH, mode));
-				}
+				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(Calendar.MONTH, mode));
 			}
-		} else if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_ANNUAL)) {
-			return bravoStatsUtil.buildMockStats(Calendar.YEAR, mode, startDate, endDate);
+		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_ANNUAL)) {
+			return bravoStatsUtil.buildMockStats(Calendar.YEAR, mode, fullStartDate, fullEndDate);
 		}
 
+		for (Map.Entry<String, BorderStatsCounts> entry : statsMap.entrySet()) {
+			borderStats.getStats().add(entry.getValue());
+	    }
+		
 		return borderStats;
 	}
 
+	private Map<String,BorderStatsCounts> buildEmptyStatsMap(String timeDelimiter, int mode, String startDate, String endDate) throws ParseException {
+		Map<String,BorderStatsCounts> emptyStatsMap = new TreeMap<String, BorderStatsCounts>();
+		int calendarUnit = 0;
+		Calendar startCal = DateUtil.buildCalender(timeDelimiter, startDate);
+		Calendar endCal = DateUtil.buildCalender(timeDelimiter, endDate);
+		
+		if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_HOURLY)) {
+			calendarUnit = Calendar.HOUR;
+		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_DAILY)) {
+			calendarUnit = Calendar.DAY_OF_MONTH;
+		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_MONTHLY)) {
+			calendarUnit = Calendar.MONTH;
+		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_ANNUAL)) {
+			calendarUnit = Calendar.YEAR;
+		}
+		
+		SimpleDateFormat formatWithSecs = new SimpleDateFormat(ProjectBravoApiConstants.DATE_FORMAT_WITH_HOUR_MIN_SECS);
+		
+		while (startCal.before(endCal)) {
+			String timestamp = formatWithSecs.format(startCal.getTime());
+			
+			if (calendarUnit == Calendar.MONTH) {
+				timestamp = DateUtil.replaceDayInDateWith(timestamp, "00");
+			}
+			BorderStatsCounts stats = new BorderStatsCounts();
+			stats.setTimestamp(timestamp);
+			
+			if (mode < 6) {
+				stats.setConveyances(new CommercialCount());
+			} else {
+				stats.setTravellers(new TravellersCount());
+			}
+			
+			emptyStatsMap.put(timestamp, stats);
+			startCal.add(calendarUnit, 1);
+		}
+		
+		return emptyStatsMap;
+	}
 }

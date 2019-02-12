@@ -38,13 +38,13 @@ public class ProvincesController {
 			@ApiParam("Time delimiter.  Valid values: hour, day, month, year.") @RequestParam("timeDelimiter") String timeDelimiter,
 			@ApiParam("Start Date in Eastern Standard Time.  Format: yyyy-MM-dd HH:mm") @RequestParam("startDate") String startDate,
 			@ApiParam("End Date in Eastern Standard Time.  Format: yyyy-MM-dd HH:mm") @RequestParam("endDate") String endDate) throws ParseException, IOException {
-		if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_HOURLY)) {
+		if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_HOURLY)) {
 			return bravoStatsUtil.buildMockProvincialStats(Calendar.HOUR, mode, startDate, endDate);
-		} else if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_DAILY)) {
+		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_DAILY)) {
 			return bravoStatsUtil.buildMockProvincialStats(Calendar.DAY_OF_MONTH, mode, startDate, endDate);
-		} else if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_MONTHLY)) {
+		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_MONTHLY)) {
 			return bravoStatsUtil.buildMockProvincialStats(Calendar.MONTH, mode, startDate, endDate);
-		} else if (timeDelimiter.equals(ProjectBravoApiConstants.DATE_RANGE_ANNUAL)) {
+		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_ANNUAL)) {
 			return bravoStatsUtil.buildMockProvincialStats(Calendar.YEAR, mode, startDate, endDate);
 		}
 		

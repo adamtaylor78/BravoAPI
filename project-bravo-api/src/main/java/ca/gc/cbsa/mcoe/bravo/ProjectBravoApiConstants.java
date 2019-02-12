@@ -5,10 +5,13 @@ public class ProjectBravoApiConstants {
 	public final static Integer DIVISION_CODE_TRAVELLERS = 1;
 	public final static Integer DIVISION_CODE_COMMERCIAL = 2;
 	
-	public final static String DATE_RANGE_HOURLY = "hour";
-	public final static String DATE_RANGE_DAILY = "day";
-	public final static String DATE_RANGE_MONTHLY = "month";
-	public final static String DATE_RANGE_ANNUAL = "year";
+	public final static String DATE_FORMAT_WITH_HOUR_MIN = "yyyy-MM-dd HH:mm";
+	public final static String DATE_FORMAT_WITHOUT_HOUR_MIN = "yyyy-MM-dd";
+	public final static String DATE_FORMAT_WITH_HOUR_MIN_SECS = "yyyy-MM-dd HH:mm:ss";
+	public final static String TIME_DELIMITER_HOURLY = "hour";
+	public final static String TIME_DELIMITER_DAILY = "day";
+	public final static String TIME_DELIMITER_MONTHLY = "month";
+	public final static String TIME_DELIMITER_ANNUAL = "year";
 	
 	public final static Integer MODE_COMMERCIAL_HWY = 1;
 	public final static Integer MODE_COMMERCIAL_RAIL = 2;
