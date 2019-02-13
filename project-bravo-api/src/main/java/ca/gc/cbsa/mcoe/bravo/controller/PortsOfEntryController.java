@@ -133,7 +133,7 @@ public class PortsOfEntryController {
 		String fullStartDate = DateUtil.buildFullDateString(timeDelimiter, startDate);
 		String fullEndDate = DateUtil.buildFullDateString(timeDelimiter, endDate);
 		
-		Map<String,BorderStatsCounts> statsMap = buildEmptyStatsMap(timeDelimiter, mode, startDate, endDate);
+		Map<String,BorderStatsCounts> statsMap = bravoStatsUtil.buildEmptyStatsMap(timeDelimiter, mode, startDate, endDate);
 		
 		if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_HOURLY)) {
 			if (mode < 6) {
@@ -284,43 +284,4 @@ public class PortsOfEntryController {
 		return borderStats;
 	}
 
-	private Map<String,BorderStatsCounts> buildEmptyStatsMap(String timeDelimiter, int mode, String startDate, String endDate) throws ParseException {
-		Map<String,BorderStatsCounts> emptyStatsMap = new TreeMap<String, BorderStatsCounts>();
-		int calendarUnit = 0;
-		Calendar startCal = DateUtil.buildCalender(timeDelimiter, startDate);
-		Calendar endCal = DateUtil.buildCalender(timeDelimiter, endDate);
-		
-		if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_HOURLY)) {
-			calendarUnit = Calendar.HOUR;
-		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_DAILY)) {
-			calendarUnit = Calendar.DAY_OF_MONTH;
-		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_MONTHLY)) {
-			calendarUnit = Calendar.MONTH;
-		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_ANNUAL)) {
-			calendarUnit = Calendar.YEAR;
-		}
-		
-		SimpleDateFormat formatWithSecs = new SimpleDateFormat(ProjectBravoApiConstants.DATE_FORMAT_WITH_HOUR_MIN_SECS);
-		
-		while (startCal.before(endCal)) {
-			String timestamp = formatWithSecs.format(startCal.getTime());
-			
-			if (calendarUnit == Calendar.MONTH) {
-				timestamp = DateUtil.replaceDayInDateWith(timestamp, "00");
-			}
-			BorderStatsCounts stats = new BorderStatsCounts();
-			stats.setTimestamp(timestamp);
-			
-			if (mode < 6) {
-				stats.setConveyances(new CommercialCount());
-			} else {
-				stats.setTravellers(new TravellersCount());
-			}
-			
-			emptyStatsMap.put(timestamp, stats);
-			startCal.add(calendarUnit, 1);
-		}
-		
-		return emptyStatsMap;
-	}
 }

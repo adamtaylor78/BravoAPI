@@ -23,5 +23,7 @@ public class ProjectBravoApiConstants {
 	public final static Integer MODE_TRAVELLERS_MARINE = 8;
 	public final static Integer MODE_TRAVELLERS_AIR = 9;
 	public final static Integer MODE_TRAVELLERS_MULTI = 10;
-	
+
+	public final static String PORT_PREFIX_BC_COMMERCIAL = "08";
+	public final static String PORT_PREFIX_BC_TRAVELLERS = "2";
 }

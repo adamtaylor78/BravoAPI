@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ClassPathResource;
@@ -16,6 +19,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 
+import ca.gc.cbsa.mcoe.bravo.ProjectBravoApiConstants;
 import ca.gc.cbsa.mcoe.bravo.controller.response.AnnualComparisonStats;
 import ca.gc.cbsa.mcoe.bravo.controller.response.BorderStats;
 import ca.gc.cbsa.mcoe.bravo.controller.response.BorderStatsCounts;
@@ -72,10 +76,11 @@ public class StatsUtil {
 		
 	}
 	
-	public BorderStats buildMockProvincialStats(int calendarUnit, int mode, String startDate, String endDate) throws ParseException, IOException {
-		BorderStats borderStats = buildMockStats(calendarUnit, mode, startDate, endDate);
+	public List<ProvincialComparisonStats> buildMockProvincialComparisonStats(int calendarUnit, int mode) throws ParseException, IOException {
 		int divider = getMockStatsDivider(calendarUnit);
 		Faker faker = new Faker();
+		
+		List<ProvincialComparisonStats> provincialComparisonStatsList = new ArrayList<ProvincialComparisonStats>();
 		
 		for (Province province : getProvincesList()) {
 			ProvincialComparisonStats provincialComparisonStats = new ProvincialComparisonStats();
@@ -86,10 +91,10 @@ public class StatsUtil {
 				provincialComparisonStats.setTravellers(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
 			}
 			
-			borderStats.getProvincialComparisonStats().add(provincialComparisonStats);
+			provincialComparisonStatsList.add(provincialComparisonStats);
 		}
 		
-		return borderStats;
+		return provincialComparisonStatsList;
 	}
 	
 	public AnnualComparisonStats buildMockAnnualComparisonStats(int calendarUnit, int mode) {
@@ -125,6 +130,46 @@ public class StatsUtil {
 		
 		return provincesList;
 		
+	}
+	
+	public Map<String,BorderStatsCounts> buildEmptyStatsMap(String timeDelimiter, int mode, String startDate, String endDate) throws ParseException {
+		Map<String,BorderStatsCounts> emptyStatsMap = new TreeMap<String, BorderStatsCounts>();
+		int calendarUnit = 0;
+		Calendar startCal = DateUtil.buildCalender(timeDelimiter, startDate);
+		Calendar endCal = DateUtil.buildCalender(timeDelimiter, endDate);
+		
+		if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_HOURLY)) {
+			calendarUnit = Calendar.HOUR;
+		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_DAILY)) {
+			calendarUnit = Calendar.DAY_OF_MONTH;
+		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_MONTHLY)) {
+			calendarUnit = Calendar.MONTH;
+		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_ANNUAL)) {
+			calendarUnit = Calendar.YEAR;
+		}
+		
+		SimpleDateFormat formatWithSecs = new SimpleDateFormat(ProjectBravoApiConstants.DATE_FORMAT_WITH_HOUR_MIN_SECS);
+		
+		while (startCal.before(endCal)) {
+			String timestamp = formatWithSecs.format(startCal.getTime());
+			
+			if (calendarUnit == Calendar.MONTH) {
+				timestamp = DateUtil.replaceDayInDateWith(timestamp, "00");
+			}
+			BorderStatsCounts stats = new BorderStatsCounts();
+			stats.setTimestamp(timestamp);
+			
+			if (mode < 6) {
+				stats.setConveyances(new CommercialCount());
+			} else {
+				stats.setTravellers(new TravellersCount());
+			}
+			
+			emptyStatsMap.put(timestamp, stats);
+			startCal.add(calendarUnit, 1);
+		}
+		
+		return emptyStatsMap;
 	}
 	
 	private int getMockStatsDivider(int calendarUnit) {
