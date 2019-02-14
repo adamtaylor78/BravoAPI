@@ -6,7 +6,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -21,7 +20,6 @@ import com.github.javafaker.Faker;
 
 import ca.gc.cbsa.mcoe.bravo.ProjectBravoApiConstants;
 import ca.gc.cbsa.mcoe.bravo.controller.response.AnnualComparisonStats;
-import ca.gc.cbsa.mcoe.bravo.controller.response.BorderStats;
 import ca.gc.cbsa.mcoe.bravo.controller.response.BorderStatsCounts;
 import ca.gc.cbsa.mcoe.bravo.controller.response.CommercialCount;
 import ca.gc.cbsa.mcoe.bravo.controller.response.Province;
@@ -31,53 +29,7 @@ import ca.gc.cbsa.mcoe.bravo.controller.response.TravellersCount;
 @Component
 public class StatsUtil {
 
-	public BorderStats buildMockStats(int calendarUnit, int mode, String startDate, String endDate) throws ParseException {
-		BorderStats borderStats = new BorderStats();
-		
-		Faker faker = new Faker();
-		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		Date startDateObj = format.parse(startDate);
-		Date endDateObj = format.parse(endDate); 
-		
-		Calendar startCal = Calendar.getInstance();
-		startCal.setTime(startDateObj);
-		Calendar endCal = Calendar.getInstance();
-		endCal.setTime(endDateObj);
-		
-		int divider = getMockStatsDivider(calendarUnit);
-		
-		while (startCal.before(endCal)) {
-			BorderStatsCounts stats = new BorderStatsCounts();
-			stats.setTimestamp(format.format(startCal.getTime()));
-						
-			if (mode < 6) {
-				CommercialCount commercialCount = new CommercialCount();
-				commercialCount.setTotal(Long.valueOf(faker.number().numberBetween(100000, 250000) / divider));
-				stats.setConveyances(commercialCount);
-			} else {
-				TravellersCount travellers = new TravellersCount();
-				travellers.setAirSecondaryTotal(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
-				travellers.setAirTotal(Long.valueOf(faker.number().numberBetween(25000, 75000) / divider));
-				travellers.setLandSecondaryTotal(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
-				travellers.setLandTotal(Long.valueOf(faker.number().numberBetween(75000, 150000) / divider));
-				travellers.setTotalSecondary(Long.valueOf(faker.number().numberBetween(15000, 25000) / divider));
-				travellers.setTotal(Long.valueOf(faker.number().numberBetween(100000, 250000) / divider));
-				stats.setTravellers(travellers);
-			}
-			
-			borderStats.getStats().add(stats);
-			startCal.add(calendarUnit, 1);
-		}
-		
-		borderStats.setAnnualComparisonStats(buildMockAnnualComparisonStats(calendarUnit, mode));
-		
-		return borderStats;
-		
-	}
-	
-	public List<ProvincialComparisonStats> buildMockProvincialComparisonStats(int calendarUnit, int mode) throws ParseException, IOException {
-		int divider = getMockStatsDivider(calendarUnit);
+	public List<ProvincialComparisonStats> buildMockProvincialComparisonStats(Map<String,BorderStatsCounts> statsMap, int calendarUnit, int mode) throws ParseException, IOException {
 		Faker faker = new Faker();
 		
 		List<ProvincialComparisonStats> provincialComparisonStatsList = new ArrayList<ProvincialComparisonStats>();
@@ -86,9 +38,31 @@ public class StatsUtil {
 			ProvincialComparisonStats provincialComparisonStats = new ProvincialComparisonStats();
 			provincialComparisonStats.setProvinceCode(province.getProvinceCode());
 			if (mode < 6) {
-				provincialComparisonStats.setConveyances(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
+				Long conveyancesCount = 0L;
+				for (Map.Entry<String,BorderStatsCounts> statsEntry : statsMap.entrySet()) {
+					if (statsEntry.getValue().getConveyances() != null) {
+						conveyancesCount = statsEntry.getValue().getConveyances().getTotal();
+						break;
+					}
+				}
+				Long totalConveyancesCount = conveyancesCount * statsMap.size();
+				long lowRange = (long) (totalConveyancesCount - (totalConveyancesCount * 0.05));
+				long highRange = (long) (totalConveyancesCount + (totalConveyancesCount * 0.05));
+				
+				provincialComparisonStats.setConveyances(Long.valueOf(faker.number().numberBetween(lowRange, highRange)));
 			} else {
-				provincialComparisonStats.setTravellers(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
+				Long travellersCount = 0L;
+				for (Map.Entry<String,BorderStatsCounts> statsEntry : statsMap.entrySet()) {
+					if (statsEntry.getValue().getTravellers() != null) {
+						travellersCount = statsEntry.getValue().getTravellers().getTotal();
+						break;
+					}
+				}
+				Long totalTravellersCount = travellersCount * statsMap.size();
+				long lowRange = (long) (totalTravellersCount - (totalTravellersCount * 0.05));
+				long highRange = (long) (totalTravellersCount + (totalTravellersCount * 0.05));
+				
+				provincialComparisonStats.setTravellers(Long.valueOf(faker.number().numberBetween(lowRange, highRange)));
 			}
 			
 			provincialComparisonStatsList.add(provincialComparisonStats);
@@ -97,19 +71,38 @@ public class StatsUtil {
 		return provincialComparisonStatsList;
 	}
 	
-	public AnnualComparisonStats buildMockAnnualComparisonStats(int calendarUnit, int mode) {
-		Faker faker = new Faker();
-		int divider = getMockStatsDivider(calendarUnit);
-		
+	public AnnualComparisonStats buildMockAnnualComparisonStats(Map<String,BorderStatsCounts> statsMap, int calendarUnit, int mode) {
 		AnnualComparisonStats annualComparisonStats = new AnnualComparisonStats();
 		if (mode < 6) {
-			for (int i=0; i < 3; i++) {
-				annualComparisonStats.getConveyances().add(Long.valueOf(faker.number().numberBetween(100000, 250000) / divider));
+			Long conveyancesCount = 0L;
+			for (Map.Entry<String,BorderStatsCounts> statsEntry : statsMap.entrySet()) {
+				if (statsEntry.getValue().getConveyances() != null) {
+					conveyancesCount = statsEntry.getValue().getConveyances().getTotal();
+					break;
+				}
 			}
+			Long totalCountYear1 = conveyancesCount * statsMap.size();
+			Long totalCountYear2 = (long) (totalCountYear1 + (totalCountYear1 * 0.02));
+			Long totalCountYear3 = (long) (totalCountYear2 + (totalCountYear2 * 0.02));
+			
+			annualComparisonStats.getConveyances().add(totalCountYear3);
+			annualComparisonStats.getConveyances().add(totalCountYear2);
+			annualComparisonStats.getConveyances().add(totalCountYear1);
 		} else {
-			for (int i=0; i < 3; i++) {
-				annualComparisonStats.getTravellers().add(Long.valueOf(faker.number().numberBetween(100000, 250000) / divider));
+			Long travellersCount = 0L;
+			for (Map.Entry<String,BorderStatsCounts> statsEntry : statsMap.entrySet()) {
+				if (statsEntry.getValue().getTravellers() != null) {
+					travellersCount = statsEntry.getValue().getTravellers().getTotal();
+					break;
+				}
 			}
+			Long totalCountYear1 = travellersCount * statsMap.size();
+			Long totalCountYear2 = (long) (totalCountYear1 + (totalCountYear1 * 0.02));
+			Long totalCountYear3 = (long) (totalCountYear2 + (totalCountYear2 * 0.02));
+			
+			annualComparisonStats.getConveyances().add(totalCountYear3);
+			annualComparisonStats.getConveyances().add(totalCountYear2);
+			annualComparisonStats.getConveyances().add(totalCountYear1);
 		}
 		
 		return annualComparisonStats;
@@ -172,17 +165,4 @@ public class StatsUtil {
 		return emptyStatsMap;
 	}
 	
-	private int getMockStatsDivider(int calendarUnit) {
-		int divider = 1;
-		
-		if (calendarUnit == Calendar.HOUR) {
-			divider = 8760;
-		} else if (calendarUnit == Calendar.DAY_OF_MONTH) {
-			divider = 365;
-		} else if (calendarUnit == Calendar.MONTH) {
-			divider = 12;
-		}
-		
-		return divider;
-	}
 }
