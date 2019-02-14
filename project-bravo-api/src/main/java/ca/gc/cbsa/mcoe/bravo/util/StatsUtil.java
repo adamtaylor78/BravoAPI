@@ -40,7 +40,7 @@ public class StatsUtil {
 			if (mode < 6) {
 				Long conveyancesCount = 0L;
 				for (Map.Entry<String,BorderStatsCounts> statsEntry : statsMap.entrySet()) {
-					if (statsEntry.getValue().getConveyances() != null) {
+					if (statsEntry.getValue().getConveyances() != null && statsEntry.getValue().getConveyances().getTotal() != null) {
 						conveyancesCount = statsEntry.getValue().getConveyances().getTotal();
 						break;
 					}
@@ -53,7 +53,7 @@ public class StatsUtil {
 			} else {
 				Long travellersCount = 0L;
 				for (Map.Entry<String,BorderStatsCounts> statsEntry : statsMap.entrySet()) {
-					if (statsEntry.getValue().getTravellers() != null) {
+					if (statsEntry.getValue().getTravellers() != null && statsEntry.getValue().getTravellers().getTotal() != null) {
 						travellersCount = statsEntry.getValue().getTravellers().getTotal();
 						break;
 					}
@@ -76,7 +76,7 @@ public class StatsUtil {
 		if (mode < 6) {
 			Long conveyancesCount = 0L;
 			for (Map.Entry<String,BorderStatsCounts> statsEntry : statsMap.entrySet()) {
-				if (statsEntry.getValue().getConveyances() != null) {
+				if (statsEntry.getValue().getConveyances() != null && statsEntry.getValue().getConveyances().getTotal() != null) {
 					conveyancesCount = statsEntry.getValue().getConveyances().getTotal();
 					break;
 				}
@@ -91,7 +91,7 @@ public class StatsUtil {
 		} else {
 			Long travellersCount = 0L;
 			for (Map.Entry<String,BorderStatsCounts> statsEntry : statsMap.entrySet()) {
-				if (statsEntry.getValue().getTravellers() != null) {
+				if (statsEntry.getValue().getTravellers() != null && statsEntry.getValue().getTravellers().getTotal() != null) {
 					travellersCount = statsEntry.getValue().getTravellers().getTotal();
 					break;
 				}
