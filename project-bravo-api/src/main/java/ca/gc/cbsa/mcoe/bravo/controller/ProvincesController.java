@@ -97,7 +97,7 @@ public class ProvincesController {
 					CommercialCount conveyances = new CommercialCount();
 					
 					for (PortStatsCommercial portStats : hourlyStats.getPorts()) {
-						if (portStats.getPort().startsWith(ProjectBravoApiConstants.PORT_PREFIX_BC_COMMERCIAL)) {
+						if (portStats.getPort().startsWith(ProjectBravoApiConstants.PORT_PREFIX_PROV_MAP_COMMERCIAL.get(provinceCode))) {
 							for (PortStatsCountsCommercial counts : portStats.getCounts()) {
 								if (counts.getMode().equals(mode.toString())) {
 									totalConveyances = (totalConveyances != null) ? totalConveyances + counts.getCount() : counts.getCount();
@@ -123,7 +123,7 @@ public class ProvincesController {
 					Long totalSecondary = null;
 					
 					for (PortStatsTravellers portStats : hourlyStats.getPorts()) {
-						if (portStats.getPort().startsWith(ProjectBravoApiConstants.PORT_PREFIX_BC_TRAVELLERS)) {
+						if (portStats.getPort().startsWith(ProjectBravoApiConstants.PORT_PREFIX_PROV_MAP_TRAVELLERS.get(provinceCode))) {
 							//TODO: Filter by mode
 							for (PassageCounts counts : portStats.getPassageCounts()) {
 								totalTravellers = (totalTravellers != null) ? totalTravellers + counts.getCount() : counts.getCount();
@@ -154,7 +154,7 @@ public class ProvincesController {
 					CommercialCount conveyances = new CommercialCount();
 					
 					for (PortStatsCommercial portStats : dailyStats.getPorts()) {
-						if (portStats.getPort().startsWith(ProjectBravoApiConstants.PORT_PREFIX_BC_COMMERCIAL)) {
+						if (portStats.getPort().startsWith(ProjectBravoApiConstants.PORT_PREFIX_PROV_MAP_COMMERCIAL.get(provinceCode))) {
 							for (PortStatsCountsCommercial counts : portStats.getCounts()) {
 								if (counts.getMode().equals(mode.toString())) {
 									totalConveyances = (totalConveyances != null) ? totalConveyances + counts.getCount() : counts.getCount();
@@ -180,7 +180,7 @@ public class ProvincesController {
 					Long totalSecondary = null;
 					
 					for (PortStatsTravellers portStats : dailyStats.getPorts()) {
-						if (portStats.getPort().startsWith(ProjectBravoApiConstants.PORT_PREFIX_BC_TRAVELLERS)) {
+						if (portStats.getPort().startsWith(ProjectBravoApiConstants.PORT_PREFIX_PROV_MAP_TRAVELLERS.get(provinceCode))) {
 							//TODO: Filter by mode
 							for (PassageCounts counts : portStats.getPassageCounts()) {
 								totalTravellers = (totalTravellers != null) ? totalTravellers + counts.getCount() : counts.getCount();
@@ -211,7 +211,7 @@ public class ProvincesController {
 					CommercialCount conveyances = new CommercialCount();
 					
 					for (PortStatsCommercial portStats : monthlyStats.getPorts()) {
-						if (portStats.getPort().startsWith(ProjectBravoApiConstants.PORT_PREFIX_BC_COMMERCIAL)) {
+						if (portStats.getPort().startsWith(ProjectBravoApiConstants.PORT_PREFIX_PROV_MAP_COMMERCIAL.get(provinceCode))) {
 							for (PortStatsCountsCommercial counts : portStats.getCounts()) {
 								if (counts.getMode().equals(mode.toString())) {
 									totalConveyances = (totalConveyances != null) ? totalConveyances + counts.getCount() : counts.getCount();
@@ -237,7 +237,7 @@ public class ProvincesController {
 					Long totalSecondary = null;
 					
 					for (PortStatsTravellers portStats : monthlyStats.getPorts()) {
-						if (portStats.getPort().startsWith(ProjectBravoApiConstants.PORT_PREFIX_BC_TRAVELLERS)) {
+						if (portStats.getPort().startsWith(ProjectBravoApiConstants.PORT_PREFIX_PROV_MAP_TRAVELLERS.get(provinceCode))) {
 							//TODO: Filter by mode
 							for (PassageCounts counts : portStats.getPassageCounts()) {
 								totalTravellers = (totalTravellers != null) ? totalTravellers + counts.getCount() : counts.getCount();

@@ -74,31 +74,27 @@ public class StatsUtil {
 	public AnnualComparisonStats buildMockAnnualComparisonStats(Map<String,BorderStatsCounts> statsMap, int calendarUnit, int mode) {
 		AnnualComparisonStats annualComparisonStats = new AnnualComparisonStats();
 		if (mode < 6) {
-			Long conveyancesCount = 0L;
+			Long totalCountYear3 = 0L;
 			for (Map.Entry<String,BorderStatsCounts> statsEntry : statsMap.entrySet()) {
 				if (statsEntry.getValue().getConveyances() != null && statsEntry.getValue().getConveyances().getTotal() != null) {
-					conveyancesCount = statsEntry.getValue().getConveyances().getTotal();
-					break;
+					totalCountYear3 += statsEntry.getValue().getConveyances().getTotal();
 				}
 			}
-			Long totalCountYear1 = conveyancesCount * statsMap.size();
-			Long totalCountYear2 = (long) (totalCountYear1 + (totalCountYear1 * 0.02));
-			Long totalCountYear3 = (long) (totalCountYear2 + (totalCountYear2 * 0.02));
+			Long totalCountYear2 = (long) (totalCountYear3 - (totalCountYear3 * 0.02));
+			Long totalCountYear1 = (long) (totalCountYear2 - (totalCountYear2 * 0.02));
 			
 			annualComparisonStats.getConveyances().add(totalCountYear3);
 			annualComparisonStats.getConveyances().add(totalCountYear2);
 			annualComparisonStats.getConveyances().add(totalCountYear1);
 		} else {
-			Long travellersCount = 0L;
+			Long totalCountYear3 = 0L;
 			for (Map.Entry<String,BorderStatsCounts> statsEntry : statsMap.entrySet()) {
 				if (statsEntry.getValue().getTravellers() != null && statsEntry.getValue().getTravellers().getTotal() != null) {
-					travellersCount = statsEntry.getValue().getTravellers().getTotal();
-					break;
+					totalCountYear3 = statsEntry.getValue().getTravellers().getTotal();
 				}
 			}
-			Long totalCountYear1 = travellersCount * statsMap.size();
-			Long totalCountYear2 = (long) (totalCountYear1 + (totalCountYear1 * 0.02));
-			Long totalCountYear3 = (long) (totalCountYear2 + (totalCountYear2 * 0.02));
+			Long totalCountYear2 = (long) (totalCountYear3 - (totalCountYear3 * 0.02));
+			Long totalCountYear1 = (long) (totalCountYear2 - (totalCountYear2 * 0.02));
 			
 			annualComparisonStats.getTravellers().add(totalCountYear3);
 			annualComparisonStats.getTravellers().add(totalCountYear2);
