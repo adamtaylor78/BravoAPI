@@ -100,9 +100,9 @@ public class StatsUtil {
 			Long totalCountYear2 = (long) (totalCountYear1 + (totalCountYear1 * 0.02));
 			Long totalCountYear3 = (long) (totalCountYear2 + (totalCountYear2 * 0.02));
 			
-			annualComparisonStats.getConveyances().add(totalCountYear3);
-			annualComparisonStats.getConveyances().add(totalCountYear2);
-			annualComparisonStats.getConveyances().add(totalCountYear1);
+			annualComparisonStats.getTravellers().add(totalCountYear3);
+			annualComparisonStats.getTravellers().add(totalCountYear2);
+			annualComparisonStats.getTravellers().add(totalCountYear1);
 		}
 		
 		return annualComparisonStats;
