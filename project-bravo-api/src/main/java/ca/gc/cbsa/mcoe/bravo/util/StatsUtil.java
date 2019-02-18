@@ -90,7 +90,7 @@ public class StatsUtil {
 			Long totalCountYear3 = 0L;
 			for (Map.Entry<String,BorderStatsCounts> statsEntry : statsMap.entrySet()) {
 				if (statsEntry.getValue().getTravellers() != null && statsEntry.getValue().getTravellers().getTotal() != null) {
-					totalCountYear3 = statsEntry.getValue().getTravellers().getTotal();
+					totalCountYear3 += statsEntry.getValue().getTravellers().getTotal();
 				}
 			}
 			Long totalCountYear2 = (long) (totalCountYear3 - (totalCountYear3 * 0.02));
