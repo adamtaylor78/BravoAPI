@@ -28,9 +28,6 @@ public class ProjectBravoApiConstants {
 	public final static Integer MODE_TRAVELLERS_AIR = 9;
 	public final static Integer MODE_TRAVELLERS_MULTI = 10;
 
-	public final static String PORT_PREFIX_BC_COMMERCIAL = "08";
-	public final static String PORT_PREFIX_BC_TRAVELLERS = "2";
-	
 	public static final Map<String, String> PORT_PREFIX_PROV_MAP_COMMERCIAL;
 	static {
         Map<String, String> tempMap = new HashMap<String, String>();

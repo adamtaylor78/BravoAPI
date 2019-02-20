@@ -96,7 +96,7 @@ public class ProvincesController {
 					borderStatsCounts.setTimestamp(hourlyStats.getId());
 					
 					Long totalConveyances = null;
-					CommercialCount conveyances = new CommercialCount();
+					CommercialCount commercialCount = new CommercialCount();
 					
 					for (PortStatsCommercial portStats : hourlyStats.getPorts()) {
 						if (portStats.getPort().startsWith(ProjectBravoApiConstants.PORT_PREFIX_PROV_MAP_COMMERCIAL.get(provinceCode))) {
@@ -126,8 +126,8 @@ public class ProvincesController {
 						}
 					}
 					
-					conveyances.setTotal(totalConveyances);
-					borderStatsCounts.setConveyances(conveyances);
+					commercialCount.setTotal(totalConveyances);
+					borderStatsCounts.setConveyances(commercialCount);
 					statsMap.put(hourlyStats.getId(), borderStatsCounts);
 				}
 				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.HOUR, mode));
@@ -191,7 +191,7 @@ public class ProvincesController {
 					borderStatsCounts.setTimestamp(dailyStats.getId());
 					
 					Long totalConveyances = null;
-					CommercialCount conveyances = new CommercialCount();
+					CommercialCount commercialCount = new CommercialCount();
 					
 					for (PortStatsCommercial portStats : dailyStats.getPorts()) {
 						if (portStats.getPort().startsWith(ProjectBravoApiConstants.PORT_PREFIX_PROV_MAP_COMMERCIAL.get(provinceCode))) {
@@ -221,8 +221,8 @@ public class ProvincesController {
 						}
 					}
 					
-					conveyances.setTotal(totalConveyances);
-					borderStatsCounts.setConveyances(conveyances);
+					commercialCount.setTotal(totalConveyances);
+					borderStatsCounts.setConveyances(commercialCount);
 					statsMap.put(dailyStats.getId(), borderStatsCounts);
 				}
 				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.DAY_OF_MONTH, mode));
@@ -286,7 +286,7 @@ public class ProvincesController {
 					borderStatsCounts.setTimestamp(monthlyStats.getId());
 					
 					Long totalConveyances = null;
-					CommercialCount conveyances = new CommercialCount();
+					CommercialCount commercialCount = new CommercialCount();
 					
 					for (PortStatsCommercial portStats : monthlyStats.getPorts()) {
 						if (portStats.getPort().startsWith(ProjectBravoApiConstants.PORT_PREFIX_PROV_MAP_COMMERCIAL.get(provinceCode))) {
@@ -316,8 +316,8 @@ public class ProvincesController {
 						}
 					}
 					
-					conveyances.setTotal(totalConveyances);
-					borderStatsCounts.setConveyances(conveyances);
+					commercialCount.setTotal(totalConveyances);
+					borderStatsCounts.setConveyances(commercialCount);
 					statsMap.put(monthlyStats.getId(), borderStatsCounts);
 				}
 				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.MONTH, mode));
