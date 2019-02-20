@@ -3,6 +3,7 @@ package ca.gc.cbsa.mcoe.bravo.controller;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -87,6 +88,7 @@ public class ProvincesController {
 		
 		if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_HOURLY)) {
 			if (mode < 6) {
+				Map<String, Long> provinceToTotalMap = new HashMap<String, Long>();
 				List<HourlyStatsCommercial> hourlyStatsList = hourlyStatsCommercialRepository.findHourlyStatsBetween(fullStartDate, fullEndDate);
 				
 				for (HourlyStatsCommercial hourlyStats : hourlyStatsList) {
@@ -106,13 +108,32 @@ public class ProvincesController {
 						}
 					}
 					
+					for (PortStatsCommercial portStats : hourlyStats.getPorts()) {
+						String province = StatsUtil.getProvinceFromPortCommercial(portStats.getPort());
+						
+						if (province != null) {
+							for (PortStatsCountsCommercial counts : portStats.getCounts()) {
+								if (counts.getMode().equals(mode.toString())) {
+									if (provinceToTotalMap.get(province) != null) {
+										Long total = provinceToTotalMap.get(province);
+										Long newTotal = total + counts.getCount();
+										provinceToTotalMap.put(province, newTotal);
+									} else {
+										provinceToTotalMap.put(province, counts.getCount());
+									}
+								}
+							}
+						}
+					}
+					
 					conveyances.setTotal(totalConveyances);
 					borderStatsCounts.setConveyances(conveyances);
 					statsMap.put(hourlyStats.getId(), borderStatsCounts);
 				}
 				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.HOUR, mode));
-				borderStats.setProvincialComparisonStats(bravoStatsUtil.buildMockProvincialComparisonStats(statsMap, Calendar.HOUR, mode));
+				borderStats.setProvincialComparisonStats(bravoStatsUtil.buildProvincialComparisonStatsCommercial(provinceToTotalMap));
 			} else {
+				Map<String, Long> provinceToTotalMap = new HashMap<String, Long>();
 				List<HourlyStatsTravellers> hourlyStatsList = hourlyStatsTravellersRepository.findHourlyStatsBetween(fullStartDate, fullEndDate);
 				
 				for (HourlyStatsTravellers hourlyStats : hourlyStatsList) {
@@ -134,16 +155,35 @@ public class ProvincesController {
 						}
 					}
 					
+					for (PortStatsTravellers portStats : hourlyStats.getPorts()) {
+						String province = StatsUtil.getProvinceFromPortTravellers(portStats.getPort());
+						
+						if (province != null) {
+							for (PassageCounts counts : portStats.getPassageCounts()) {
+								//if (counts.getMode().equals(mode.toString())) {
+									if (provinceToTotalMap.get(province) != null) {
+										Long total = provinceToTotalMap.get(province);
+										Long newTotal = total + counts.getCount();
+										provinceToTotalMap.put(province, newTotal);
+									} else {
+										provinceToTotalMap.put(province, counts.getCount());
+									}
+								//}
+							}
+						}
+					}
+					
 					travellersCount.setTotal(totalTravellers);
 					travellersCount.setTotalSecondary(totalSecondary);
 					borderStatsCounts.setTravellers(travellersCount);
 					statsMap.put(hourlyStats.getId(), borderStatsCounts);
 				}
 				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.HOUR, mode));
-				borderStats.setProvincialComparisonStats(bravoStatsUtil.buildMockProvincialComparisonStats(statsMap, Calendar.HOUR, mode));
+				borderStats.setProvincialComparisonStats(bravoStatsUtil.buildProvincialComparisonStatsTravellers(provinceToTotalMap));
 			}
 		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_DAILY)) {
 			if (mode < 6) {
+				Map<String, Long> provinceToTotalMap = new HashMap<String, Long>();
 				List<DailyStatsCommercial> dailyStatsList = dailyStatsCommercialRepository.findDailyStatsBetween(fullStartDate, fullEndDate);
 				
 				for (DailyStatsCommercial dailyStats : dailyStatsList) {
@@ -163,13 +203,32 @@ public class ProvincesController {
 						}
 					}
 					
+					for (PortStatsCommercial portStats : dailyStats.getPorts()) {
+						String province = StatsUtil.getProvinceFromPortCommercial(portStats.getPort());
+						
+						if (province != null) {
+							for (PortStatsCountsCommercial counts : portStats.getCounts()) {
+								if (counts.getMode().equals(mode.toString())) {
+									if (provinceToTotalMap.get(province) != null) {
+										Long total = provinceToTotalMap.get(province);
+										Long newTotal = total + counts.getCount();
+										provinceToTotalMap.put(province, newTotal);
+									} else {
+										provinceToTotalMap.put(province, counts.getCount());
+									}
+								}
+							}
+						}
+					}
+					
 					conveyances.setTotal(totalConveyances);
 					borderStatsCounts.setConveyances(conveyances);
 					statsMap.put(dailyStats.getId(), borderStatsCounts);
 				}
 				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.DAY_OF_MONTH, mode));
-				borderStats.setProvincialComparisonStats(bravoStatsUtil.buildMockProvincialComparisonStats(statsMap, Calendar.DAY_OF_MONTH, mode));
+				borderStats.setProvincialComparisonStats(bravoStatsUtil.buildProvincialComparisonStatsCommercial(provinceToTotalMap));
 			} else {
+				Map<String, Long> provinceToTotalMap = new HashMap<String, Long>();
 				List<DailyStatsTravellers> dailyStatsList = dailyStatsTravellersRepository.findDailyStatsBetween(fullStartDate, fullEndDate);
 				
 				for (DailyStatsTravellers dailyStats : dailyStatsList) {
@@ -191,16 +250,35 @@ public class ProvincesController {
 						}
 					}
 					
+					for (PortStatsTravellers portStats : dailyStats.getPorts()) {
+						String province = StatsUtil.getProvinceFromPortTravellers(portStats.getPort());
+						
+						if (province != null) {
+							for (PassageCounts counts : portStats.getPassageCounts()) {
+								//if (counts.getMode().equals(mode.toString())) {
+									if (provinceToTotalMap.get(province) != null) {
+										Long total = provinceToTotalMap.get(province);
+										Long newTotal = total + counts.getCount();
+										provinceToTotalMap.put(province, newTotal);
+									} else {
+										provinceToTotalMap.put(province, counts.getCount());
+									}
+								//}
+							}
+						}
+					}
+					
 					travellersCount.setTotal(totalTravellers);
 					travellersCount.setTotalSecondary(totalSecondary);
 					borderStatsCounts.setTravellers(travellersCount);
 					statsMap.put(dailyStats.getId(), borderStatsCounts);
 				}
 				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.DAY_OF_MONTH, mode));
-				borderStats.setProvincialComparisonStats(bravoStatsUtil.buildMockProvincialComparisonStats(statsMap, Calendar.DAY_OF_MONTH, mode));
+				borderStats.setProvincialComparisonStats(bravoStatsUtil.buildProvincialComparisonStatsTravellers(provinceToTotalMap));
 			}
 		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_MONTHLY)) {
 			if (mode < 6) {
+				Map<String, Long> provinceToTotalMap = new HashMap<String, Long>();
 				List<MonthlyStatsCommercial> monthlyStatsList = monthlyStatsCommercialRepository.findMonthlyStatsBetween(fullStartDate, fullEndDate);
 				
 				for (MonthlyStatsCommercial monthlyStats : monthlyStatsList) {
@@ -220,13 +298,32 @@ public class ProvincesController {
 						}
 					}
 					
+					for (PortStatsCommercial portStats : monthlyStats.getPorts()) {
+						String province = StatsUtil.getProvinceFromPortCommercial(portStats.getPort());
+						
+						if (province != null) {
+							for (PortStatsCountsCommercial counts : portStats.getCounts()) {
+								if (counts.getMode().equals(mode.toString())) {
+									if (provinceToTotalMap.get(province) != null) {
+										Long total = provinceToTotalMap.get(province);
+										Long newTotal = total + counts.getCount();
+										provinceToTotalMap.put(province, newTotal);
+									} else {
+										provinceToTotalMap.put(province, counts.getCount());
+									}
+								}
+							}
+						}
+					}
+					
 					conveyances.setTotal(totalConveyances);
 					borderStatsCounts.setConveyances(conveyances);
 					statsMap.put(monthlyStats.getId(), borderStatsCounts);
 				}
 				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.MONTH, mode));
-				borderStats.setProvincialComparisonStats(bravoStatsUtil.buildMockProvincialComparisonStats(statsMap, Calendar.MONTH, mode));
+				borderStats.setProvincialComparisonStats(bravoStatsUtil.buildProvincialComparisonStatsCommercial(provinceToTotalMap));
 			} else {
+				Map<String, Long> provinceToTotalMap = new HashMap<String, Long>();
 				List<MonthlyStatsTravellers> monthlyStatsList = monthlyStatsTravellersRepository.findMonthlyStatsBetween(fullStartDate, fullEndDate);
 				
 				for (MonthlyStatsTravellers monthlyStats : monthlyStatsList) {
@@ -248,13 +345,31 @@ public class ProvincesController {
 						}
 					}
 					
+					for (PortStatsTravellers portStats : monthlyStats.getPorts()) {
+						String province = StatsUtil.getProvinceFromPortTravellers(portStats.getPort());
+						
+						if (province != null) {
+							for (PassageCounts counts : portStats.getPassageCounts()) {
+								//if (counts.getMode().equals(mode.toString())) {
+									if (provinceToTotalMap.get(province) != null) {
+										Long total = provinceToTotalMap.get(province);
+										Long newTotal = total + counts.getCount();
+										provinceToTotalMap.put(province, newTotal);
+									} else {
+										provinceToTotalMap.put(province, counts.getCount());
+									}
+								//}
+							}
+						}
+					}
+					
 					travellersCount.setTotal(totalTravellers);
 					travellersCount.setTotalSecondary(totalSecondary);
 					borderStatsCounts.setTravellers(travellersCount);
 					statsMap.put(monthlyStats.getId(), borderStatsCounts);
 				}
 				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.MONTH, mode));
-				borderStats.setProvincialComparisonStats(bravoStatsUtil.buildMockProvincialComparisonStats(statsMap, Calendar.MONTH, mode));
+				borderStats.setProvincialComparisonStats(bravoStatsUtil.buildProvincialComparisonStatsTravellers(provinceToTotalMap));
 			}
 		}
 
@@ -264,5 +379,5 @@ public class ProvincesController {
 		
 		return borderStats;
 	}
-
+	
 }

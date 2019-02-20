@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.apache.commons.io.IOUtils;
@@ -29,6 +30,34 @@ import ca.gc.cbsa.mcoe.bravo.controller.response.TravellersCount;
 @Component
 public class StatsUtil {
 
+	public List<ProvincialComparisonStats> buildProvincialComparisonStatsCommercial(Map<String,Long> provincesCountMap) throws ParseException, IOException {
+		List<ProvincialComparisonStats> provincialComparisonStatsList = new ArrayList<ProvincialComparisonStats>();
+		
+		for (String province : provincesCountMap.keySet()) {
+			ProvincialComparisonStats provincialComparisonStats = new ProvincialComparisonStats();
+			provincialComparisonStats.setProvinceCode(province);
+			provincialComparisonStats.setConveyances(provincesCountMap.get(province));
+			
+			provincialComparisonStatsList.add(provincialComparisonStats);
+		}
+		
+		return provincialComparisonStatsList;
+	}
+	
+	public List<ProvincialComparisonStats> buildProvincialComparisonStatsTravellers(Map<String,Long> provincesCountMap) throws ParseException, IOException {
+		List<ProvincialComparisonStats> provincialComparisonStatsList = new ArrayList<ProvincialComparisonStats>();
+		
+		for (String province : provincesCountMap.keySet()) {
+			ProvincialComparisonStats provincialComparisonStats = new ProvincialComparisonStats();
+			provincialComparisonStats.setProvinceCode(province);
+			provincialComparisonStats.setTravellers(provincesCountMap.get(province));
+			
+			provincialComparisonStatsList.add(provincialComparisonStats);
+		}
+		
+		return provincialComparisonStatsList;
+	}
+	
 	public List<ProvincialComparisonStats> buildMockProvincialComparisonStats(Map<String,BorderStatsCounts> statsMap, int calendarUnit, int mode) throws ParseException, IOException {
 		Faker faker = new Faker();
 		
@@ -160,5 +189,24 @@ public class StatsUtil {
 		
 		return emptyStatsMap;
 	}
+
+	public static String getProvinceFromPortCommercial(String port) {
+		for (Entry<String, String> provinceEntry : ProjectBravoApiConstants.PORT_PREFIX_PROV_MAP_COMMERCIAL.entrySet()) {
+			if (port.startsWith(provinceEntry.getValue())) {
+				return provinceEntry.getKey();
+			}
+		}
+		
+		return null;
+	}
 	
+	public static String getProvinceFromPortTravellers(String port) {
+		for (Entry<String, String> provinceEntry : ProjectBravoApiConstants.PORT_PREFIX_PROV_MAP_TRAVELLERS.entrySet()) {
+			if (port.startsWith(provinceEntry.getValue())) {
+				return provinceEntry.getKey();
+			}
+		}
+		
+		return null;
+	}
 }
