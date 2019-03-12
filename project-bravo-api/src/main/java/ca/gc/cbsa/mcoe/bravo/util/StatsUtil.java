@@ -234,8 +234,6 @@ public class StatsUtil {
 			} else {
 				currentStartDateFormatted = format.format(startCal.getTime());
 			}
-			System.out.println(currentStartDateFormatted);
-			
 			BorderStatsCounts stats = new BorderStatsCounts();
 			stats.setTimestamp(currentStartDateFormatted);
 						
@@ -247,18 +245,12 @@ public class StatsUtil {
 			} else {
 				TravellersCount travellers = new TravellersCount();
 				TravellersCount vehicles = new TravellersCount();
-				travellers.setAirSecondaryTotal(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
-				travellers.setAirTotal(Long.valueOf(faker.number().numberBetween(25000, 75000) / divider));
-				travellers.setLandSecondaryTotal(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
-				travellers.setLandTotal(Long.valueOf(faker.number().numberBetween(75000, 150000) / divider));
+				travellers.setTotal(Long.valueOf(faker.number().numberBetween(100000, 250000) / divider));
 				travellers.setTotalSecondary(Long.valueOf(faker.number().numberBetween(15000, 25000) / divider));
-				vehicles.setAirSecondaryTotal(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
-				vehicles.setAirTotal(Long.valueOf(faker.number().numberBetween(25000, 75000) / divider));
-				vehicles.setLandSecondaryTotal(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
-				vehicles.setLandTotal(Long.valueOf(faker.number().numberBetween(75000, 150000) / divider));
+				vehicles.setTotal(Long.valueOf(faker.number().numberBetween(100000, 250000) / divider));
 				vehicles.setTotalSecondary(Long.valueOf(faker.number().numberBetween(15000, 25000) / divider));
 				stats.setTravellers(travellers);
-				stats.setVehicles(vehicles);
+				//stats.setVehicles(vehicles);
 				statsMap.put(currentStartDateFormatted, stats);
 			}
 			
@@ -269,12 +261,12 @@ public class StatsUtil {
 		AnnualComparisonStats annualComparisonStats = new AnnualComparisonStats();
 		if (mode < 6) {
 			for (int i=0; i < 3; i++) {
-				annualComparisonStats.getConveyances().add(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
+				annualComparisonStats.getConveyances().add(Long.valueOf(faker.number().numberBetween(100000, 100000) / divider) * statsMap.size());
 			}
 		} else {
 			for (int i=0; i < 3; i++) {
-				annualComparisonStats.getTravellers().add(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
-				annualComparisonStats.getVehicles().add(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
+				annualComparisonStats.getTravellers().add(Long.valueOf(faker.number().numberBetween(100000, 100000) / divider) * statsMap.size());
+				annualComparisonStats.getVehicles().add(Long.valueOf(faker.number().numberBetween(100000, 100000) / divider) * statsMap.size());
 			}
 		}
 		borderStats.setAnnualComparisonStats(annualComparisonStats);

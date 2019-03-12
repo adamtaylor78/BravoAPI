@@ -98,10 +98,13 @@ public class PortsOfEntryController {
 		
 		if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_HOURLY)) {
 			borderStats = bravoStatsUtil.buildMockStats(Calendar.HOUR, mode, fullStartDate, fullEndDate, statsMap);
+			borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.HOUR, mode));
 		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_DAILY)) {
 			borderStats = bravoStatsUtil.buildMockStats(Calendar.DAY_OF_MONTH, mode, fullStartDate, fullEndDate, statsMap);
+			borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.DAY_OF_MONTH, mode));
 		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_MONTHLY)) {
 			borderStats = bravoStatsUtil.buildMockStats(Calendar.MONTH, mode, fullStartDate, fullEndDate, statsMap);
+			borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.MONTH, mode));
 		}
 		
 		return borderStats;

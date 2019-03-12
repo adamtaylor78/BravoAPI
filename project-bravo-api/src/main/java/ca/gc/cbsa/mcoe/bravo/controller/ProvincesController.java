@@ -50,12 +50,15 @@ public class ProvincesController {
 		
 		if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_HOURLY)) {
 			borderStats = bravoStatsUtil.buildMockStats(Calendar.HOUR, mode, fullStartDate, fullEndDate, statsMap);
+			borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.HOUR, mode));
 			borderStats.setProvincialComparisonStats(bravoStatsUtil.buildMockProvincialComparisonStats(statsMap, Calendar.HOUR, mode));
 		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_DAILY)) {
 			borderStats = bravoStatsUtil.buildMockStats(Calendar.DAY_OF_MONTH, mode, fullStartDate, fullEndDate, statsMap);
 			borderStats.setProvincialComparisonStats(bravoStatsUtil.buildMockProvincialComparisonStats(statsMap, Calendar.DAY_OF_MONTH, mode));
+			borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.DAY_OF_MONTH, mode));
 		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_MONTHLY)) {
 			borderStats = bravoStatsUtil.buildMockStats(Calendar.MONTH, mode, fullStartDate, fullEndDate, statsMap);
+			borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.MONTH, mode));
 			borderStats.setProvincialComparisonStats(bravoStatsUtil.buildMockProvincialComparisonStats(statsMap, Calendar.MONTH, mode));
 		}
 		
