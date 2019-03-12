@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -21,6 +22,7 @@ import com.github.javafaker.Faker;
 
 import ca.gc.cbsa.mcoe.bravo.ProjectBravoApiConstants;
 import ca.gc.cbsa.mcoe.bravo.controller.response.AnnualComparisonStats;
+import ca.gc.cbsa.mcoe.bravo.controller.response.BorderStats;
 import ca.gc.cbsa.mcoe.bravo.controller.response.BorderStatsCounts;
 import ca.gc.cbsa.mcoe.bravo.controller.response.CommercialCount;
 import ca.gc.cbsa.mcoe.bravo.controller.response.Province;
@@ -190,6 +192,97 @@ public class StatsUtil {
 		return emptyStatsMap;
 	}
 
+	public BorderStats buildMockStats(int calendarUnit, int mode, String startDate, String endDate, Map<String,BorderStatsCounts> statsMap) throws ParseException {
+		BorderStats borderStats = new BorderStats();
+		
+		Faker faker = new Faker();
+		
+		SimpleDateFormat format = new SimpleDateFormat(ProjectBravoApiConstants.DATE_FORMAT_WITH_HOUR_MIN_SECS);
+		Date startDateObj = format.parse(startDate);
+		Date endDateObj = format.parse(endDate); 
+		
+		Calendar startCal = Calendar.getInstance();
+		startCal.setTime(startDateObj);
+		
+		if (calendarUnit == Calendar.MONTH) {
+			startCal.add(Calendar.DAY_OF_MONTH, 1);
+		}
+		
+		Calendar endCal = Calendar.getInstance();
+		endCal.setTime(endDateObj);
+		endCal.add(calendarUnit, 1);
+		
+		if (calendarUnit == Calendar.MONTH) {
+			endCal.add(Calendar.DAY_OF_MONTH, 1);
+		}
+		
+		int divider = 1;
+		
+		if (calendarUnit == Calendar.HOUR) {
+			divider = 8760;
+		} else if (calendarUnit == Calendar.DAY_OF_MONTH) {
+			divider = 365;
+		} else if (calendarUnit == Calendar.MONTH) {
+			divider = 12;
+		}
+		
+		while (startCal.before(endCal)) {
+			String currentStartDateFormatted = null;
+			
+			if (calendarUnit == Calendar.MONTH) {
+				currentStartDateFormatted = DateUtil.replaceDayInDateWith(format.format(startCal.getTime()), "00");
+			} else {
+				currentStartDateFormatted = format.format(startCal.getTime());
+			}
+			System.out.println(currentStartDateFormatted);
+			
+			BorderStatsCounts stats = new BorderStatsCounts();
+			stats.setTimestamp(currentStartDateFormatted);
+						
+			if (mode < 6) {
+				CommercialCount commercialCount = new CommercialCount();
+				commercialCount.setTotal(Long.valueOf(faker.number().numberBetween(100000, 250000) / divider));
+				stats.setConveyances(commercialCount);
+				statsMap.put(currentStartDateFormatted, stats);
+			} else {
+				TravellersCount travellers = new TravellersCount();
+				TravellersCount vehicles = new TravellersCount();
+				travellers.setAirSecondaryTotal(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
+				travellers.setAirTotal(Long.valueOf(faker.number().numberBetween(25000, 75000) / divider));
+				travellers.setLandSecondaryTotal(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
+				travellers.setLandTotal(Long.valueOf(faker.number().numberBetween(75000, 150000) / divider));
+				travellers.setTotalSecondary(Long.valueOf(faker.number().numberBetween(15000, 25000) / divider));
+				vehicles.setAirSecondaryTotal(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
+				vehicles.setAirTotal(Long.valueOf(faker.number().numberBetween(25000, 75000) / divider));
+				vehicles.setLandSecondaryTotal(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
+				vehicles.setLandTotal(Long.valueOf(faker.number().numberBetween(75000, 150000) / divider));
+				vehicles.setTotalSecondary(Long.valueOf(faker.number().numberBetween(15000, 25000) / divider));
+				stats.setTravellers(travellers);
+				stats.setVehicles(vehicles);
+				statsMap.put(currentStartDateFormatted, stats);
+			}
+			
+			borderStats.getStats().add(stats);
+			startCal.add(calendarUnit, 1);
+		}
+		
+		AnnualComparisonStats annualComparisonStats = new AnnualComparisonStats();
+		if (mode < 6) {
+			for (int i=0; i < 3; i++) {
+				annualComparisonStats.getConveyances().add(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
+			}
+		} else {
+			for (int i=0; i < 3; i++) {
+				annualComparisonStats.getTravellers().add(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
+				annualComparisonStats.getVehicles().add(Long.valueOf(faker.number().numberBetween(9000, 18000) / divider));
+			}
+		}
+		borderStats.setAnnualComparisonStats(annualComparisonStats);
+		
+		return borderStats;
+		
+	}
+	
 	public static String getProvinceFromPortCommercial(String port) {
 		for (Entry<String, String> provinceEntry : ProjectBravoApiConstants.PORT_PREFIX_PROV_MAP_COMMERCIAL.entrySet()) {
 			if (port.startsWith(provinceEntry.getValue())) {

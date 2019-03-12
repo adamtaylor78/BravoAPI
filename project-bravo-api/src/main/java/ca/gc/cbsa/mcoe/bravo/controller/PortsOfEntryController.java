@@ -22,26 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ca.gc.cbsa.mcoe.bravo.ProjectBravoApiConstants;
 import ca.gc.cbsa.mcoe.bravo.controller.response.BorderStats;
 import ca.gc.cbsa.mcoe.bravo.controller.response.BorderStatsCounts;
-import ca.gc.cbsa.mcoe.bravo.controller.response.CommercialCount;
 import ca.gc.cbsa.mcoe.bravo.controller.response.PortOfEntry;
-import ca.gc.cbsa.mcoe.bravo.controller.response.TravellersCount;
-import ca.gc.cbsa.mcoe.bravo.domain.commercial.DailyStatsCommercial;
-import ca.gc.cbsa.mcoe.bravo.domain.commercial.HourlyStatsCommercial;
-import ca.gc.cbsa.mcoe.bravo.domain.commercial.MonthlyStatsCommercial;
-import ca.gc.cbsa.mcoe.bravo.domain.commercial.PortStatsCommercial;
-import ca.gc.cbsa.mcoe.bravo.domain.commercial.PortStatsCountsCommercial;
-import ca.gc.cbsa.mcoe.bravo.domain.travellers.DailyStatsTravellers;
-import ca.gc.cbsa.mcoe.bravo.domain.travellers.HourlyStatsTravellers;
-import ca.gc.cbsa.mcoe.bravo.domain.travellers.MonthlyStatsTravellers;
-import ca.gc.cbsa.mcoe.bravo.domain.travellers.PassageCounts;
-import ca.gc.cbsa.mcoe.bravo.domain.travellers.PortStatsTravellers;
-import ca.gc.cbsa.mcoe.bravo.domain.travellers.ReferralCounts;
-import ca.gc.cbsa.mcoe.bravo.repository.commercial.DailyStatsCommercialRepository;
-import ca.gc.cbsa.mcoe.bravo.repository.commercial.HourlyStatsCommercialRepository;
-import ca.gc.cbsa.mcoe.bravo.repository.commercial.MonthlyStatsCommercialRepository;
-import ca.gc.cbsa.mcoe.bravo.repository.travellers.DailyStatsTravellersRepository;
-import ca.gc.cbsa.mcoe.bravo.repository.travellers.HourlyStatsTravellersRepository;
-import ca.gc.cbsa.mcoe.bravo.repository.travellers.MonthlyStatsTravellersRepository;
 import ca.gc.cbsa.mcoe.bravo.util.DateUtil;
 import ca.gc.cbsa.mcoe.bravo.util.StatsUtil;
 import io.swagger.annotations.ApiOperation;
@@ -52,24 +33,6 @@ public class PortsOfEntryController {
 
 	@Autowired
 	private StatsUtil bravoStatsUtil;
-	
-	@Autowired
-	private HourlyStatsCommercialRepository hourlyStatsCommercialRepository;
-	
-	@Autowired
-	private DailyStatsCommercialRepository dailyStatsCommercialRepository;
-	
-	@Autowired
-	private MonthlyStatsCommercialRepository monthlyStatsCommercialRepository;
-
-	@Autowired
-	private HourlyStatsTravellersRepository hourlyStatsTravellersRepository;
-	
-	@Autowired
-	private DailyStatsTravellersRepository dailyStatsTravellersRepository;
-	
-	@Autowired
-	private MonthlyStatsTravellersRepository monthlyStatsTravellersRepository;
 	
 	@RequestMapping(value = "/ports-of-entry", method = RequestMethod.GET)
 	@ApiOperation("Returns a list of POEs.")
@@ -125,156 +88,21 @@ public class PortsOfEntryController {
 			@ApiParam("Start Date in Eastern Standard Time.  Format:  for hourly queries use 'yyyy-MM-dd HH:mm', for daily queries use 'yyyy-MM-dd', for monthly queries use 'yyyy-MM', for yearly queries use 'yyyy'") @RequestParam("startDate") String startDate,
 			@ApiParam("End Date in Eastern Standard Time.  Format:  for hourly queries use 'yyyy-MM-dd HH:mm', for daily queries use 'yyyy-MM-dd', for monthly queries use 'yyyy-MM', for yearly queries use 'yyyy'") @RequestParam("endDate") String endDate)
 			throws ParseException {
-		BorderStats borderStats = new BorderStats();
 
 		String fullStartDate = DateUtil.buildFullDateString(timeDelimiter, startDate);
 		String fullEndDate = DateUtil.buildFullDateString(timeDelimiter, endDate);
 		
 		Map<String,BorderStatsCounts> statsMap = bravoStatsUtil.buildEmptyStatsMap(timeDelimiter, mode, startDate, endDate);
 		
+		BorderStats borderStats = null;
+		
 		if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_HOURLY)) {
-			if (mode < 6) {
-				List<HourlyStatsCommercial> hourlyStatsList = hourlyStatsCommercialRepository.findHourlyStatsBetween(fullStartDate, fullEndDate);
-				
-				for (HourlyStatsCommercial hourlyStats : hourlyStatsList) {
-					BorderStatsCounts borderStatsCounts = new BorderStatsCounts();
-					borderStatsCounts.setTimestamp(hourlyStats.getId());
-					
-					for (PortStatsCommercial portStats : hourlyStats.getPorts()) {
-						if (portStats.getPort().equals(workLocationCode)) {
-							for (PortStatsCountsCommercial counts : portStats.getCounts()) {
-								if (counts.getMode().equals(mode.toString())) {
-									CommercialCount conveyances = new CommercialCount();
-									conveyances.setTotal(counts.getCount());
-									borderStatsCounts.setConveyances(conveyances);
-									statsMap.put(hourlyStats.getId(), borderStatsCounts);
-								}
-							}
-						}
-					}
-				}
-				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.HOUR, mode));
-			} else {
-				List<HourlyStatsTravellers> hourlyStatsList = hourlyStatsTravellersRepository.findHourlyStatsBetween(fullStartDate, fullEndDate);
-				
-				for (HourlyStatsTravellers hourlyStats : hourlyStatsList) {
-					BorderStatsCounts borderStatsCounts = new BorderStatsCounts();
-					borderStatsCounts.setTimestamp(hourlyStats.getId());
-					
-					for (PortStatsTravellers portStats : hourlyStats.getPorts()) {
-						if (portStats.getPort().equals(workLocationCode)) {
-							TravellersCount travellersCount = new TravellersCount();
-							
-							for (PassageCounts counts : portStats.getPassageCounts()) {
-								travellersCount.setTotal(counts.getCount());
-							}
-							for (ReferralCounts counts : portStats.getReferralCounts()) {
-								travellersCount.setTotalSecondary(counts.getCount());
-							}
-							borderStatsCounts.setTravellers(travellersCount);
-							statsMap.put(hourlyStats.getId(), borderStatsCounts);
-						}
-					}
-				}
-				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.HOUR, mode));
-			}
+			borderStats = bravoStatsUtil.buildMockStats(Calendar.HOUR, mode, fullStartDate, fullEndDate, statsMap);
 		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_DAILY)) {
-			if (mode < 6) {
-				List<DailyStatsCommercial> dailyStatsList = dailyStatsCommercialRepository.findDailyStatsBetween(fullStartDate, fullEndDate);
-				
-				for (DailyStatsCommercial dailyStats : dailyStatsList) {
-					BorderStatsCounts borderStatsCounts = new BorderStatsCounts();
-					borderStatsCounts.setTimestamp(dailyStats.getId());
-					
-					for (PortStatsCommercial portStats : dailyStats.getPorts()) {
-						if (portStats.getPort().equals(workLocationCode)) {
-							for (PortStatsCountsCommercial counts : portStats.getCounts()) {
-								if (counts.getMode().equals(mode.toString())) {
-									CommercialCount conveyances = new CommercialCount();
-									conveyances.setTotal(counts.getCount());
-									borderStatsCounts.setConveyances(conveyances);
-									statsMap.put(dailyStats.getId(), borderStatsCounts);
-								}
-							}
-						}
-					}
-				}
-				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.DAY_OF_MONTH, mode));
-			} else {
-				List<DailyStatsTravellers> dailyStatsList = dailyStatsTravellersRepository.findDailyStatsBetween(fullStartDate, fullEndDate);
-				
-				for (DailyStatsTravellers dailyStats : dailyStatsList) {
-					BorderStatsCounts borderStatsCounts = new BorderStatsCounts();
-					borderStatsCounts.setTimestamp(dailyStats.getId());
-					
-					for (PortStatsTravellers portStats : dailyStats.getPorts()) {
-						if (portStats.getPort().equals(workLocationCode)) {
-							TravellersCount travellersCount = new TravellersCount();
-							
-							for (PassageCounts counts : portStats.getPassageCounts()) {
-								travellersCount.setTotal(counts.getCount());
-							}
-							for (ReferralCounts counts : portStats.getReferralCounts()) {
-								travellersCount.setTotalSecondary(counts.getCount());
-							}
-							borderStatsCounts.setTravellers(travellersCount);
-							statsMap.put(dailyStats.getId(), borderStatsCounts);
-						}
-					}
-				}
-				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.DAY_OF_MONTH, mode));
-			}
+			borderStats = bravoStatsUtil.buildMockStats(Calendar.DAY_OF_MONTH, mode, fullStartDate, fullEndDate, statsMap);
 		} else if (timeDelimiter.equals(ProjectBravoApiConstants.TIME_DELIMITER_MONTHLY)) {
-			if (mode < 6) {
-				List<MonthlyStatsCommercial> monthlyStatsList = monthlyStatsCommercialRepository.findMonthlyStatsBetween(fullStartDate, fullEndDate);
-				
-				for (MonthlyStatsCommercial monthlyStats : monthlyStatsList) {
-					BorderStatsCounts borderStatsCounts = new BorderStatsCounts();
-					borderStatsCounts.setTimestamp(monthlyStats.getId());
-					
-					for (PortStatsCommercial portStats : monthlyStats.getPorts()) {
-						if (portStats.getPort().equals(workLocationCode)) {
-							for (PortStatsCountsCommercial counts : portStats.getCounts()) {
-								if (counts.getMode().equals(mode.toString())) {
-									CommercialCount conveyances = new CommercialCount();
-									conveyances.setTotal(counts.getCount());
-									borderStatsCounts.setConveyances(conveyances);
-									statsMap.put(monthlyStats.getId(), borderStatsCounts);
-								}
-							}
-						}
-					}
-				}
-				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.MONTH, mode));
-			} else {
-				List<MonthlyStatsTravellers> monthlyStatsList = monthlyStatsTravellersRepository.findMonthlyStatsBetween(fullStartDate, fullEndDate);
-				
-				for (MonthlyStatsTravellers monthlyStats : monthlyStatsList) {
-					BorderStatsCounts borderStatsCounts = new BorderStatsCounts();
-					borderStatsCounts.setTimestamp(monthlyStats.getId());
-					
-					for (PortStatsTravellers portStats : monthlyStats.getPorts()) {
-						if (portStats.getPort().equals(workLocationCode)) {
-							TravellersCount travellersCount = new TravellersCount();
-							
-							for (PassageCounts counts : portStats.getPassageCounts()) {
-								travellersCount.setTotal(counts.getCount());
-							}
-							for (ReferralCounts counts : portStats.getReferralCounts()) {
-								travellersCount.setTotalSecondary(counts.getCount());
-							}
-							borderStatsCounts.setTravellers(travellersCount);
-							statsMap.put(monthlyStats.getId(), borderStatsCounts);
-						}
-					}
-				}
-				borderStats.setAnnualComparisonStats(bravoStatsUtil.buildMockAnnualComparisonStats(statsMap, Calendar.MONTH, mode));
-			}
+			borderStats = bravoStatsUtil.buildMockStats(Calendar.MONTH, mode, fullStartDate, fullEndDate, statsMap);
 		}
-
-		for (Map.Entry<String, BorderStatsCounts> entry : statsMap.entrySet()) {
-			borderStats.getStats().add(entry.getValue());
-	    }
 		
 		return borderStats;
 	}
