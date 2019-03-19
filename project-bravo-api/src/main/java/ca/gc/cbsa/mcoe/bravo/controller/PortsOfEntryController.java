@@ -93,7 +93,7 @@ public class PortsOfEntryController {
 	@RequestMapping(value = "/ports-of-entry/{workLocationCode}", method = RequestMethod.GET)
 	@ApiOperation("Returns a specific POE by work location. Returns 404 if not found.")
 	public PortOfEntry getPortOfEntryByWorkLocation(
-			@ApiParam("Work location code.  Example: 0453") @PathVariable(value = "workLocationCode") String workLocationCode)
+			@ApiParam(value = "Work location code.  Example: 0453", required = true) @PathVariable(value = "workLocationCode") String workLocationCode)
 			throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -119,7 +119,7 @@ public class PortsOfEntryController {
 	@RequestMapping(value = "/ports-of-entry/{workLocationCode}/stats", method = RequestMethod.GET)
 	@ApiOperation("Returns stats for a specific POE by work location by a specific date range. Returns 404 if not found.")
 	public BorderStats getPortOfEntryStatsByWorkLocation(
-			@ApiParam("Work location code.  Example: 0453") @PathVariable(value = "workLocationCode") String workLocationCode,
+			@ApiParam(value = "Work location code.  Example: 0453", required = true) @PathVariable(value = "workLocationCode") String workLocationCode,
 			@ApiParam("Mode.  1 = Commercial Hwy, 2 = Commercial Rail, 3 = Commercial Marine, 4 = Commercial Air, 5 = Commercial Multi, 6 = Travellers Hwy, 7 = Travellers Rail, 8 = Travellers Marine, 9 = Travellers Air, 10 = Travellers Multi") @RequestParam(value="mode") Integer mode,
 			@ApiParam("Time delimiter.  Valid values: hour, day, month.") @RequestParam("timeDelimiter") String timeDelimiter,
 			@ApiParam("Start Date in Eastern Standard Time.  Format:  for hourly queries use 'yyyy-MM-dd HH:mm', for daily queries use 'yyyy-MM-dd', for monthly queries use 'yyyy-MM', for yearly queries use 'yyyy'") @RequestParam("startDate") String startDate,

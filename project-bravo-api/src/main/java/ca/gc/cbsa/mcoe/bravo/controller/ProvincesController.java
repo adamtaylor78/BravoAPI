@@ -74,7 +74,7 @@ public class ProvincesController {
 	
 	@RequestMapping(value = "/provinces/{provinceCode}/stats", method = RequestMethod.GET)
 	@ApiOperation("Returns stats for a specific Province by province code for a specific date range. Returns 404 if not found.")
-	public BorderStats getProvincialStats(@ApiParam("Province code.  Example: ON") @PathVariable(value = "provinceCode") String provinceCode,
+	public BorderStats getProvincialStats(@ApiParam(value = "Province code.  Example: ON", required = true) @PathVariable(value = "provinceCode") String provinceCode,
 			@ApiParam("Mode.  1 = Commercial Hwy, 2 = Commercial Rail, 3 = Commercial Marine, 4 = Commercial Air, 5 = Commercial Multi, 6 = Travellers Hwy, 7 = Travellers Rail, 8 = Travellers Marine, 9 = Travellers Air, 10 = Travellers Multi") @RequestParam(value="mode") Integer mode,
 			@ApiParam("Time delimiter.  Valid values: hour, day, month.") @RequestParam("timeDelimiter") String timeDelimiter,
 			@ApiParam("Start Date in Eastern Standard Time.  Format:  for hourly queries use 'yyyy-MM-dd HH:mm', for daily queries use 'yyyy-MM-dd', for monthly queries use 'yyyy-MM', for yearly queries use 'yyyy'") @RequestParam("startDate") String startDate,
